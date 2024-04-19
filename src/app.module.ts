@@ -21,7 +21,8 @@ import { AddressesModule } from './addresses/addresses.module';
         host: configService.get('DB_HOST'),
         port: +configService.get('DB_PORT'),
         username: configService.get('DB_USERNAME'),
-        passsword: configService.get('DB_PASSWORD'),
+        // passsword: configService.get('DB_PASSWORD'),
+        password:"secret",  //remove befor prod
         database: configService.get('DB_NAME'),
         entities: [join(process.cwd(), 'dist/**/*.entity.js')],
         // remove synchronize true before pushing to main
@@ -30,12 +31,13 @@ import { AddressesModule } from './addresses/addresses.module';
         logging: true,
       }),
     }),
-
-    UsersModule,
     ClientsModule,
     SuppliersModule,
     OemsModule,
+    UsersModule,
     AddressesModule,
+  
+    
   ],
   controllers: [AppController],
   providers: [AppService],
