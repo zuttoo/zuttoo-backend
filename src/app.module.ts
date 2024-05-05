@@ -9,6 +9,7 @@ import { ClientsModule } from './clients/clients.module';
 import { SuppliersModule } from './suppliers/suppliers.module';
 import { OemsModule } from './oems/oems.module';
 import { AddressesModule } from './addresses/addresses.module';
+import { Aws_seeModule } from './SES_AWS/aws_ses.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
@@ -33,6 +34,7 @@ import { AddressesModule } from './addresses/addresses.module';
     OemsModule,
     SuppliersModule,
     UsersModule,
+    Aws_seeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
