@@ -9,10 +9,7 @@ import { ClientsModule } from './clients/clients.module';
 import { SuppliersModule } from './suppliers/suppliers.module';
 import { OemsModule } from './oems/oems.module';
 import { AddressesModule } from './addresses/addresses.module';
-
 import { AuthModule } from './auth/auth.module';
-
-
 import { Aws_seeModule } from './SES_AWS/aws_ses.module';
 
 @Module({
@@ -25,7 +22,6 @@ import { Aws_seeModule } from './SES_AWS/aws_ses.module';
     UsersModule,
     AuthModule,
     Aws_seeModule,
-
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -6,7 +6,11 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('signup')
-  async signup(@Body() createUserDto: { email: string; phone: string; name: string }): Promise<void> {
-    return this.authService.createUser(createUserDto.email, createUserDto.phone, createUserDto.name);
+  async signup(@Body() createUserDto: { email: string; password: string }): Promise<void> {
+    await this.authService.createUser(createUserDto.email, createUserDto.password);
+  }
+  @Post('login')
+  async login(@Body() loginUserDto: { email: string; password: string }) {
+    return this.authService.authenticateUser(loginUserDto.email, loginUserDto.password);
   }
 }
