@@ -2,13 +2,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import {
-  BadRequestException,
-  ValidationPipe,
-  VersioningType,
-} from '@nestjs/common';
+import { BadRequestException, ValidationPipe, VersioningType } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
   app.setGlobalPrefix('api');
   app.enableVersioning({
     type: VersioningType.URI,
@@ -24,11 +21,12 @@ async function bootstrap() {
         return new BadRequestException(result);
       },
       stopAtFirstError: true,
-    }),
+    })
   );
 
-  const configService = app.get(ConfigService);
-  const port = configService.get('app.port');
+  // const configService = app.get(ConfigService);
+  // const port = configService.get('app.port');
+  const port = 8080;
   const config = new DocumentBuilder()
     .setTitle('Zuttoo be')
     .setDescription('Zuttoo backend APIs')
