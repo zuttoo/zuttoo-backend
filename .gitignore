@@ -12,6 +12,10 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+#config files
+private/*
+config/*
+
 # OS
 .DS_Store
 
