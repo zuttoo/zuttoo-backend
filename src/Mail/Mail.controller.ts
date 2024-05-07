@@ -1,13 +1,13 @@
 import { Body, Controller, Inject, Post } from "@nestjs/common";
-import { Aws_sesService } from "./aws_ses.service";
+import { MailService } from "./Mail.service";
 import { Maildata } from "./interfaces/maildata.interface";
 import { MailDataDto } from "./dto/maildata.dto";
 
 
 
 @Controller('mail')
-export class Aws_sesControler {
-    constructor(@Inject(Aws_sesService) private readonly sesServiece: Aws_sesService) {}
+export class MailControler {
+    constructor(@Inject(MailService) private readonly sesServiece: MailService) {}
 
     @Post()
     async sendMail(@Body() maildatadto: MailDataDto) {

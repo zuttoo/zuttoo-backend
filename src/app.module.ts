@@ -10,7 +10,7 @@ import { SuppliersModule } from './suppliers/suppliers.module';
 import { OemsModule } from './oems/oems.module';
 import { AddressesModule } from './addresses/addresses.module';
 import { AuthModule } from './auth/auth.module';
-import { Aws_seeModule } from './SES_AWS/aws_ses.module';
+import { MailModule } from './Mail/Mail.module';
 
 @Module({
   imports: [
@@ -21,7 +21,7 @@ import { Aws_seeModule } from './SES_AWS/aws_ses.module';
     SuppliersModule,
     UsersModule,
     AuthModule,
-    Aws_seeModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
