@@ -15,6 +15,7 @@ lerna-debug.log*
 #config files
 private/*
 config/*
+*.pem
 
 # OS
 .DS_Store
