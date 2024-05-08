@@ -3,7 +3,7 @@ import { Maildata } from './interfaces/maildata.interface';
 import { SESv2Client, SendEmailCommand } from '@aws-sdk/client-sesv2';
 
 @Injectable()
-export class Aws_sesService {
+export class MailService {
   private readonly sesClient: SESv2Client;
 
   constructor() {
