@@ -5,10 +5,10 @@ import { Supplier } from '../../suppliers/entities/supplier.entity';
 import { Oem } from '../../oems/entities/oem.entity';
 
 export enum UserRole {
-  Admin = 'Admin',
-  User = 'User',
-  Manager = 'Manager',
-  SuperAdmin = 'SuperAdmin',
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+  MANAGER = 'MANAGER',
+  SUPERADMIN = 'SUPERADMIN',
 }
 
 @Entity()
@@ -34,7 +34,7 @@ export class User extends BaseEntity {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   password: string;
 
   @Column()
@@ -43,7 +43,7 @@ export class User extends BaseEntity {
   @Column({
     type: 'enum',
     enum: UserRole,
-    default: UserRole.User,
+    default: UserRole.USER,
   })
-  role: UserRole;
+  role: string;
 }

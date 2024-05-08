@@ -28,7 +28,7 @@ export class AuthService {
     });
   }
 
-  async createUser(email: string, password: string): Promise<unknown> {
+  async createUser(email: string, password: string): Promise<any> {
     const params: AdminCreateUserCommandInput = {
       UserPoolId: cognitoUserPoolId,
       Username: email,
