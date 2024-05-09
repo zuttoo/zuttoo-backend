@@ -1,5 +1,5 @@
 export interface Maildata {
-    mail: string;
-    subject: string;
-    data: string;
+  mail: string;
+  subject: string;
+  data: string;
 }

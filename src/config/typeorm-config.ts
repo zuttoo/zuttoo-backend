@@ -3,12 +3,12 @@ const config = require('config');
 import { join } from 'path';
 import * as fs from 'fs';
 import { DataSource } from 'typeorm';
-const {host, port, username, password, database, caFilePath}=config.get('awsRdsConfig');
+const { host, port, username, password, database, caFilePath } = config.get('awsRdsConfig');
 
 export const typeOrmConfig = new DataSource({
   type: 'postgres',
   // url: dbUrl,
-  host:host,
+  host: host,
   port: parseInt(port),
   username: username,
   password: password,
@@ -19,8 +19,8 @@ export const typeOrmConfig = new DataSource({
   extra: {
     ssl: {
       // remove before prod
-      rejectUnauthorized:false,
-      ca: fs.readFileSync(caFilePath)
+      rejectUnauthorized: false,
+      ca: fs.readFileSync(caFilePath),
     },
   },
   //   remove before deploying

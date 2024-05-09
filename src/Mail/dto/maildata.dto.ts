@@ -1,5 +1,5 @@
 export class MailDataDto {
-    mail: string;
-    subject: string;
-    data: string;
+  mail: string;
+  subject: string;
+  data: string;
 }

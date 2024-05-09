@@ -1,2 +1,2 @@
-import { typeOrmConfig } from "./typeorm-config";
-export {typeOrmConfig};
+import { typeOrmConfig } from './typeorm-config';
+export { typeOrmConfig };
