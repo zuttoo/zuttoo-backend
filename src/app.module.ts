@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { dataSource } from './ormconfig';
+import { typeOrmConfig } from './config/typeorm-config';
 import { UsersModule } from './users/users.module';
 import { ClientsModule } from './clients/clients.module';
 import { SuppliersModule } from './suppliers/suppliers.module';
@@ -14,7 +14,7 @@ import { MailModule } from './Mail/Mail.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(dataSource.options),
+    TypeOrmModule.forRoot(typeOrmConfig.options),
     AddressesModule,
     ClientsModule,
     OemsModule,

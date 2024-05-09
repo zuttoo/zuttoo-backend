@@ -1,13 +1,11 @@
-import { DataSource } from 'typeorm';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const config = require('config');
 import { join } from 'path';
 import * as fs from 'fs';
-
-const dbUrl = config.get('postgresUrl');
+import { DataSource } from 'typeorm';
 const {host, port, username, password, database, caFilePath}=config.get('awsRdsConfig');
 
-export const dataSource = new DataSource({
+export const typeOrmConfig = new DataSource({
   type: 'postgres',
   // url: dbUrl,
   host:host,
@@ -27,5 +25,5 @@ export const dataSource = new DataSource({
   },
   //   remove before deploying
   synchronize: true,
-  logging: false,
+  logging: true,
 });
