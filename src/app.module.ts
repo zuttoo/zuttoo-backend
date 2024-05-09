@@ -12,19 +12,19 @@ import { AddressesModule } from './addresses/addresses.module';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './Mail/Mail.module';
 import { OrdersModule } from './orders/orders.module';
-import { OrdersModule } from './orders/orders.module';
+
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig.options),
     AddressesModule,
     ClientsModule,
-    OemsModule,
     SuppliersModule,
     UsersModule,
     AuthModule,
     MailModule,
     OrdersModule,
+    OemsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

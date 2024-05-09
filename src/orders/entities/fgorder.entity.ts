@@ -1,7 +1,5 @@
-import { string } from 'joi';
 import { Oem } from '../../oems/entities/oem.entity';
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-
 export enum OrderStatus {
   DELAYED = 'DEALYED',
   ONTIME = 'ONTIME',
@@ -75,6 +73,9 @@ export class FgOrder extends BaseEntity {
   })
   lastStatusUpdatedAt: Date;
 
-  @ManyToOne(() => Oem, (Oem) => Oem.id)
-  oem: Oem;
+  @ManyToOne(() => Oem, (Oem) => Oem.fgOrder)
+  oem: any;
+
+
+
 }

@@ -30,9 +30,9 @@ export class Oem extends BaseEntity {
   @JoinTable()
   clients: Client[];
 
-  @OneToMany(() => User, (user) => user.oem)
+  @OneToMany(() => User, (user)=>user.oem)
   users: User[];
 
-  @OneToMany(() => FgOrder, (fgorder) => fgorder.id)
+  @OneToMany(() => FgOrder, (fgorder) => fgorder.oem)
   fgOrder: FgOrder[];
 }
