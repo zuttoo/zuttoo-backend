@@ -33,7 +33,7 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  async updateUser(createUserDto: CreateUserDto): Promise<User>{
+  // async updateUser(createUserDto: CreateUserDto): Promise<User>{
     
-  };
+  // };
 }
