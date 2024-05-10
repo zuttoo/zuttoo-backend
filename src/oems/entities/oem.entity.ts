@@ -10,14 +10,14 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm';
+import { DefaultEntity } from '../../common/default.entity';
 import { Address } from '../../addresses/entities/address.entity';
 import { User } from '../../users/entities/user.entity';
 import { Client } from '../../clients/entities/client.entity';
 import { FgOrder } from '../../orders/entities/fgorder.entity';
 @Entity()
-export class Oem extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+export class Oem extends DefaultEntity {
+
 
   @Column()
   name: string;

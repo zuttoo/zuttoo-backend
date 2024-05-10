@@ -1,9 +1,9 @@
+import { DefaultEntity } from '../../common/default.entity';
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 
 @Entity()
-export class Address extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+export class Address extends DefaultEntity {
+
 
   @Column()
   address1: string;

@@ -1,4 +1,5 @@
 import { Oem } from '../../oems/entities/oem.entity';
+import { DefaultEntity } from '../../common/default.entity';
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 export enum OrderStatus {
   DELAYED = 'DEALYED',
@@ -13,9 +14,8 @@ export enum Uom {
   TONNES = 'TONNES',
 }
 @Entity()
-export class FgOrder extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+export class FgOrder extends DefaultEntity {
+
 
   @Column({
     type: 'date',
