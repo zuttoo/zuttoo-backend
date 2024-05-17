@@ -42,4 +42,6 @@ export class User extends DefaultEntity {
     default: UserRole.USER,
   })
   role: string;
+
+  
 }

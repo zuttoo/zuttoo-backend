@@ -4,11 +4,11 @@ export class CreateUserDto {
   @IsString()
   @IsOptional()
   @IsNotEmpty()
-  name: string;
+  name: string; //stored in userpool
 
   @IsEmail()
   @IsOptional()
-  email: string;
+  email: string; //stored in user pool
 
   @IsUUID()
   @IsOptional()

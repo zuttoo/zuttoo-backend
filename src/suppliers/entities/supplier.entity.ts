@@ -13,6 +13,7 @@ import { DefaultEntity } from '../../common/default.entity';
 import { Address } from '../../addresses/entities/address.entity';
 import { User } from '../../users/entities/user.entity';
 import { Client } from '../../clients/entities/client.entity';
+import {RmOrder} from '../../orders/entities/rmorder.entity'
 
 @Entity()
 export class Supplier extends DefaultEntity {
@@ -31,4 +32,9 @@ export class Supplier extends DefaultEntity {
 
   @OneToMany(() => User, (user) => user.supplier)
   users: User[];
+
+  @OneToMany(()=>RmOrder, (rmorder)=>rmorder.supplier)
+  rmOrders:RmOrder[];
+
+
 }
