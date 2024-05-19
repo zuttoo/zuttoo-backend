@@ -1,5 +1,6 @@
 import { DefaultEntity } from "src/common/default.entity";
-import { Column, Entity } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
+import { RmLineItem } from "./rmlineitems.entity";
 
 export enum RMStageStatus{
     PO_ISSUED="PO_ISSUED",
@@ -120,7 +121,7 @@ export class RmSkuStage extends DefaultEntity{
     lastManualMailSentAt:Date;
 
     @Column({
-        type:'int8',
+        type:'int4',
         nullable:true,
     })
     manualMailSentCount:number;
@@ -150,14 +151,8 @@ export class RmSkuStage extends DefaultEntity{
     whatsappRecepientNumber:string;
 
     @Column({
-        type:'int8',
+        type:'int4',
         nullable:true
     })
     excalationLevel:number;
-
-
-
-
-
-
 }

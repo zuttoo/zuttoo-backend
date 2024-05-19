@@ -60,7 +60,7 @@ export class FgOrder extends DefaultEntity {
     type: 'float',
     nullable: true,
   })
-  quanitity: number;
+  quantity: number;
 
   @Column({
     type: 'enum',

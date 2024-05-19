@@ -16,6 +16,15 @@ export class RmSku extends DefaultEntity{
     supplier: typeof Supplier;
 
     @Column({nullable:true})
+    product:string;
+
+    @Column({nullable:true})
+    materialDescription:string;
+
+    @Column({nullable:true})
+    materialGrade:string;
+
+    @Column({nullable:true})
     materialNumber: string;
 
     @Column({nullable:true})
@@ -30,9 +39,7 @@ export class RmSku extends DefaultEntity{
     @Column({nullable:true})
     inventory: number;
 
-    @OneToMany(()=>RmLineItem, (rmlineitem)=>RmLineItem.rmsku)
+    @OneToMany(()=>RmLineItem, (rmlineitem)=>rmlineitem.rmsku)
     rmLineItems: RmLineItem[];
-
-
 
 }
