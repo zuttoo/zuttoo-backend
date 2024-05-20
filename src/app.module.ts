@@ -17,14 +17,16 @@ import { OrdersModule } from './orders/orders.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig.options),
+   
     AddressesModule,
     ClientsModule,
     SuppliersModule,
     UsersModule,
     AuthModule,
-    MailModule,
+    // MailModule,
     OrdersModule,
     OemsModule,
+   
   ],
   controllers: [AppController],
   providers: [AppService],
