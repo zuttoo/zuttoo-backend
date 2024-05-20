@@ -34,5 +34,5 @@ export class FgSku extends DefaultEntity{
     client: any;
 
     @ManyToOne(()=>OrderLineItem, (orderLineItem)=>orderLineItem.fgSku, {nullable:true})
-    fgLineItems: OrderLineItem[];
+    orderLineItems: OrderLineItem[];
 }
