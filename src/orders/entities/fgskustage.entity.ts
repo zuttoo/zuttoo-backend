@@ -1,7 +1,5 @@
 import { DefaultEntity } from "src/common/default.entity";
 import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
-import { FgLineItem } from "./fglineitem.entity";
-
 export enum FGStageStatus{
     ASSEMBLY="ASSEMBLY",
     PAINTING="PAINTING",
@@ -142,9 +140,5 @@ export class FgSkuStage extends DefaultEntity{
         nullable:true
     })
     excalationLevel:number;
-
-    @OneToOne(()=>FgLineItem)
-    @JoinColumn()
-    fgLineItem: any;
 
 }

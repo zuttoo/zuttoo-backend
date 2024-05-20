@@ -1,8 +1,8 @@
 import { DefaultEntity } from "src/common/default.entity";
 import { Oem } from "src/oems/entities/oem.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
-import { FgLineItem } from "./fglineitem.entity";
 import { Client } from "src/clients/entities/client.entity";
+import { OrderLineItem } from "./order-lineitem.entity";
 
 @Entity()
 export class FgSku extends DefaultEntity{
@@ -33,6 +33,6 @@ export class FgSku extends DefaultEntity{
     @JoinColumn({name:'clientId'})
     client: any;
 
-    @OneToMany(()=>FgLineItem, (FgLineItem)=>FgLineItem.fgSku, {nullable:true})
-    fgLineItems: FgLineItem[];
+    @ManyToOne(()=>OrderLineItem, (orderLineItem)=>orderLineItem.fgSku, {nullable:true})
+    fgLineItems: OrderLineItem[];
 }

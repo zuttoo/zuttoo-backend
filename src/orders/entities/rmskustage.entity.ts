@@ -1,6 +1,5 @@
 import { DefaultEntity } from "src/common/default.entity";
-import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
-import { RmLineItem } from "./rmlineitems.entity";
+import { Column, Entity} from "typeorm";
 
 export enum RMStageStatus{
     PO_ISSUED="PO_ISSUED",

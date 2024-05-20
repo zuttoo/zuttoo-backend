@@ -23,7 +23,7 @@ import { OrdersModule } from './orders/orders.module';
     SuppliersModule,
     UsersModule,
     AuthModule,
-    MailModule,
+    // MailModule,
     OrdersModule,
     OemsModule,
    

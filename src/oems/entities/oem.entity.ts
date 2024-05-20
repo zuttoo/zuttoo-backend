@@ -15,8 +15,8 @@ import { DefaultEntity } from '../../common/default.entity';
 import { Address } from '../../addresses/entities/address.entity';
 import { User } from '../../users/entities/user.entity';
 import { Client } from '../../clients/entities/client.entity';
-import { FgOrder } from '../../orders/entities/fgorder.entity';
 import { FgSku } from 'src/orders/entities/fgsku.entity';
+import { Order } from 'src/orders/entities/order.entity';
 @Entity()
 export class Oem extends DefaultEntity {
 
@@ -34,8 +34,8 @@ export class Oem extends DefaultEntity {
   @OneToMany(() => User, (user)=>user.oem)
   users: User[];
 
-  @OneToMany(() => FgOrder, (fgorder) => fgorder.oem)
-  fgOrder: FgOrder[];
+  @OneToMany(() => Order, (order) => order.oem)
+  order: Order[];
 
   @OneToMany(()=>FgSku, (fgsku)=>fgsku.oem )
   FgSku: FgSku[];
