@@ -13,7 +13,7 @@ export enum OrderStatus {
 
 export enum Uom {
   NOS = 'NOS',
-  METERS = 'METERS',
+  METRES = 'METRES',
   TONNES = 'TONNES',
 }
 

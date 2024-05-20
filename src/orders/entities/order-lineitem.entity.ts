@@ -46,16 +46,14 @@ export class OrderLineItem extends DefaultEntity{
     @ManyToOne(()=>Order, (order)=>order.orderLineItem, {nullable:true})
     order: any;
 
-    @ManyToOne(()=>FgSku, (FgSku)=>FgSku.fgLineItems, {nullable:true})
+    @ManyToOne(()=>FgSku, (FgSku)=>FgSku.orderLineItems, {nullable:true})
     fgSku:typeof FgSku;  
 
     @OneToOne(()=>FgSkuStage,{nullable:true})
     @JoinColumn()
     fgskustage:FgSkuStage[];
 
-  
-
-    @ManyToOne(()=>RmSku, (rmsku)=>rmsku.rmLineItems, {nullable:true})
+    @ManyToOne(()=>RmSku, (rmsku)=>rmsku.orderLineItems, {nullable:true})
     rmsku: typeof RmSku;    
 
     @OneToOne(()=>RmSkuStage, {nullable:true})
