@@ -17,6 +17,7 @@ import { OrdersModule } from './orders/orders.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig.options),
+   
     AddressesModule,
     ClientsModule,
     SuppliersModule,
@@ -25,6 +26,7 @@ import { OrdersModule } from './orders/orders.module';
     MailModule,
     OrdersModule,
     OemsModule,
+   
   ],
   controllers: [AppController],
   providers: [AppService],

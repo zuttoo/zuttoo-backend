@@ -1,7 +1,10 @@
 import { Oem } from '../../oems/entities/oem.entity';
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { DefaultEntity } from '../../common/default.entity';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Client } from '../../clients/entities/client.entity';
+import { FgLineItem } from './fglineitem.entity';
 export enum OrderStatus {
-  DELAYED = 'DEALYED',
+  DELAYED = 'DELAYED',
   ONTIME = 'ONTIME',
   IN_TRANSIT = 'IN_TRANSIT',
   DELIVERED = 'DELIVERED',
@@ -13,9 +16,8 @@ export enum Uom {
   TONNES = 'TONNES',
 }
 @Entity()
-export class FgOrder extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+export class FgOrder extends DefaultEntity {
+
 
   @Column({
     type: 'date',
@@ -58,7 +60,7 @@ export class FgOrder extends BaseEntity {
     type: 'float',
     nullable: true,
   })
-  quanitity: number;
+  quantity: number;
 
   @Column({
     type: 'enum',
@@ -68,14 +70,18 @@ export class FgOrder extends BaseEntity {
   uom: string;
 
   @Column({
-    type: 'timestamp with time zone',
+    type: 'timestamptz',
     nullable: true,
   })
   lastStatusUpdatedAt: Date;
 
-  @ManyToOne(() => Oem, (Oem) => Oem.fgOrder)
+  @ManyToOne(() => Oem, (Oem) => Oem.fgOrder, {nullable:true})
   oem: any;
 
+  @ManyToOne(()=>Client, (Client)=>Client.fgOrder, {nullable:true})
+  client:any;
 
+  @OneToMany(()=>FgLineItem, (FgLineItem)=>FgLineItem.fgOrder, {nullable:true})
+  fgLineItems:any;
 
 }

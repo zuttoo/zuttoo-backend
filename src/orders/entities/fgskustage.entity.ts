@@ -1,0 +1,150 @@
+import { DefaultEntity } from "src/common/default.entity";
+import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
+import { FgLineItem } from "./fglineitem.entity";
+
+export enum FGStageStatus{
+    ASSEMBLY="ASSEMBLY",
+    PAINTING="PAINTING",
+    PACKAGING="PACKAGING",
+    DISPATCH="DISPATCH",
+    DELIVERED="DELIVERED",
+    FG_WORKSTATION="FG_WORKSTATION",
+
+}
+@Entity()
+export class FgSkuStage extends DefaultEntity{
+    @Column({
+        type:'timestamptz',
+        nullable:true
+    })
+    actualAssemblyDate:Date;
+
+    @Column({
+        type:'timestamptz',
+        nullable:true
+    })
+    predictedAssemblyDate:Date;
+
+    @Column({
+        type:'timestamptz',
+        nullable:true
+    })
+    actualPaintingDate:Date;
+
+    
+    @Column({
+        type:'timestamptz',
+        nullable:true
+    })
+    predictedPaintingDate:Date;
+
+    
+    @Column({
+        type:'timestamptz',
+        nullable:true
+    })
+    actualPackagingDate:Date;
+
+    @Column({
+        type:'timestamptz',
+        nullable:true
+    })
+    predictedPackagingDate:Date;
+
+    @Column({
+        type:'timestamptz',
+        nullable:true
+    })
+    actualDispatchDate:Date;
+
+    @Column({
+        type:'timestamptz',
+        nullable:true
+    })
+    predictedDispatchDate:Date;
+
+    @Column({
+        type:'timestamptz',
+        nullable:true
+    })
+    actualDeliveryDate:Date;
+
+    @Column({
+        type:'timestamptz',
+        nullable:true
+    })
+    predictedDeliveryDate:Date;
+
+    @Column({
+        type:'enum',
+        enum:FGStageStatus,
+        nullable:true,
+        default:FGStageStatus.ASSEMBLY
+    })
+    status:FGStageStatus;
+
+    @Column({
+        type:'timestamptz',
+        nullable:true
+    })
+    lastReminderMailSentAt:Date;
+
+    @Column({
+        type:'timestamptz',
+        nullable:true
+    })
+    lastReminderWhatsappSentAt:Date;
+
+    @Column({
+        type:'timestamptz',
+        nullable:true
+    })
+    lastNotificationSentAt:Date;
+
+    @Column({
+        type:'timestamptz',
+        nullable:true
+    })
+    lastManualMailSentAt:Date;
+
+    @Column({
+        type:'int8',
+        nullable:true,
+    })
+    manualMailSentCount:number;
+
+    @Column({
+        type:'varchar',
+        nullable:true
+    })
+    emailRecepient:string;
+
+    @Column({
+        type:'varchar',
+        nullable:true
+    })
+   recepientEmail:string;
+
+    @Column({
+        type:'varchar',
+        nullable:true
+    })
+    whatsappRecipient:string;
+
+    @Column({
+        type:'varchar',
+        nullable:true
+    })
+    whatsappRecepientNumber:string;
+
+    @Column({
+        type:'int8',
+        nullable:true
+    })
+    excalationLevel:number;
+
+    @OneToOne(()=>FgLineItem)
+    @JoinColumn()
+    fgLineItem: any;
+
+}
