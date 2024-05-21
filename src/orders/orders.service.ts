@@ -1,26 +1,44 @@
 import { Injectable } from '@nestjs/common';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import {Repository} from 'typeorm';
+import {Order} from './entities/index';
+import { GetOrderDto } from './dto';
+
 
 @Injectable()
 export class OrdersService {
-  create(createOrderDto: CreateOrderDto) {
-    return 'This action adds a new order';
+  constructor(@InjectRepository(Order) private readonly orderRepository: Repository<Order>){}
+  
+  async getOrders(
+  dto:GetOrderDto,
+  ): Promise<{data:Order[];totalCount:number; currentPage:number; totalPages:number}>{
+
+    const {clientId, materialType, page, limit}=dto;
+    const skip = (page - 1) * limit;
+    const take = limit;
+
+    const query = this.orderRepository
+    .createQueryBuilder('o')
+    .where('o.clientId = :clientId', { clientId });
+
+  if (materialType !== 'all') {
+    query.andWhere('o.materialType = :materialType', {
+      materialType,
+    });
   }
 
-  findAll() {
-    return `This action returns all orders`;
-  }
+  const [orders, totalCount] = await query
+    .skip(skip)
+    .take(take)
+    .getManyAndCount();
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
-  }
+  return {
+    data: orders,
+    totalCount,
+    currentPage: page,
+    totalPages: Math.ceil(totalCount / limit),
+  };
 
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
-  }
 
-  remove(id: number) {
-    return `This action removes a #${id} order`;
   }
 }
