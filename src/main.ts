@@ -22,6 +22,7 @@ async function bootstrap() {
       },
       stopAtFirstError: true,
       whitelist:true,
+      transform:true,
     })
   );
 

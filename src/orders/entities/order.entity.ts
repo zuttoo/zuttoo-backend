@@ -39,6 +39,11 @@ export class Order extends DefaultEntity {
   purchaseOrderDate: Date;
 
   @Column({
+    nullable:true
+  })
+  purchaseOrderNumber:string;
+  
+  @Column({
     type: 'date',
     nullable: true,
   })
