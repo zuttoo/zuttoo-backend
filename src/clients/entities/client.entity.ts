@@ -11,9 +11,9 @@ import { Address } from '../../addresses/entities/address.entity';
 import { User } from '../../users/entities/user.entity';
 import { Supplier } from '../../suppliers/entities/supplier.entity';
 import { Oem } from '../../oems/entities/oem.entity';
-import { FgOrder } from '../../orders/entities/fgorder.entity';
 import { FgSku } from 'src/orders/entities/fgsku.entity';
 import { RmSku } from 'src/orders/entities/rmsku.entity';
+import { Order } from 'src/orders/entities/order.entity';
 @Entity()
 export class Client extends DefaultEntity {
 
@@ -33,8 +33,8 @@ export class Client extends DefaultEntity {
   @OneToMany(() => User, (user) => user.client, {nullable:true})
   users: User[];
 
-  @OneToMany(()=>FgOrder, (FgOrder)=>FgOrder.client, {nullable:true})
-  fgOrder: FgOrder[];
+  @OneToMany(()=>Order, (order)=>order.client, {nullable:true})
+  order: Order[];
 
   @OneToMany(()=>FgSku, (FgSku)=>FgSku.client, {nullable:true})
   fgSku:FgSku[];

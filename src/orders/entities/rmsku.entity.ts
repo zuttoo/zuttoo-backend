@@ -2,7 +2,7 @@ import { Client } from "src/clients/entities/client.entity";
 import { DefaultEntity } from "src/common/default.entity";
 import { Supplier } from "src/suppliers/entities/supplier.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
-import { RmLineItem } from "./rmlineitems.entity";
+import { OrderLineItem } from "./order-lineitem.entity";
 
 @Entity()
 export class RmSku extends DefaultEntity{
@@ -39,7 +39,7 @@ export class RmSku extends DefaultEntity{
     @Column({nullable:true})
     inventory: number;
 
-    @OneToMany(()=>RmLineItem, (rmlineitem)=>rmlineitem.rmsku)
-    rmLineItems: RmLineItem[];
+    @ManyToOne(()=>OrderLineItem, (orderLineItem)=>orderLineItem.rmsku, {nullable:true})
+    orderLineItems: OrderLineItem[];
 
 }
