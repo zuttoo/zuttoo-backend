@@ -14,6 +14,7 @@ import { Oem } from '../../oems/entities/oem.entity';
 import { FgSku } from 'src/orders/entities/fgsku.entity';
 import { RmSku } from 'src/orders/entities/rmsku.entity';
 import { Order } from 'src/orders/entities/order.entity';
+import { Product } from 'src/product/entities/product.entity';
 @Entity()
 export class Client extends DefaultEntity {
 
@@ -42,4 +43,8 @@ export class Client extends DefaultEntity {
   
   @OneToMany(()=>RmSku, (RmSku)=>RmSku.client, {nullable:true})
   rmskus:RmSku[];
+
+  @OneToMany(()=>Product, (product)=>product.client, {nullable:true})
+  product:Product[]
+
 }

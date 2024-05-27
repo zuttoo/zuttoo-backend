@@ -13,3 +13,9 @@ End Points:
     3. Uupdate Supplier Names --Done
     4. Insert 5 RM Orders into order table
     5. Inseret 5 Fg Orders into order table
+
+
+# Supplier Selection
+   1. The product (FG) that the client makes is known to Zuttoo. It's the FG SKU table
+   2. For next step, mapping between FGSKU , SFG and FG SKU is required
+   3. Along with mapping, real time inventory data for ALL SKU is required

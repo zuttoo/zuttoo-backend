@@ -3,6 +3,7 @@ import { DefaultEntity } from "src/common/default.entity";
 import { Supplier } from "src/suppliers/entities/supplier.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { OrderLineItem } from "./order-lineitem.entity";
+import { SFGSku } from "./sfgsku.entity";
 
 @Entity()
 export class RmSku extends DefaultEntity{
@@ -41,5 +42,8 @@ export class RmSku extends DefaultEntity{
 
     @ManyToOne(()=>OrderLineItem, (orderLineItem)=>orderLineItem.rmsku, {nullable:true})
     orderLineItems: OrderLineItem[];
+
+    @ManyToOne(()=>SFGSku, (sfgsku)=>sfgsku.rmsku)
+    sfgsku:SFGSku[];
 
 }
