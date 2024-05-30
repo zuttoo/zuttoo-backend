@@ -25,5 +25,5 @@ export const typeOrmConfig = new DataSource({
   },
   //   remove before deploying
   synchronize: true,
-  logging: true,
+  logging: false,
 });

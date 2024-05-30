@@ -12,7 +12,7 @@ export class Product extends DefaultEntity{
     name: string;
 
     @ManyToOne(()=>Client, (client)=>client.product,{nullable:true})
-    client:typeof Client;
+    client:Client[];
 
     @OneToMany(()=>FgSku, (fgsku)=>fgsku.product, {nullable:true})
     fgsku: FgSku[];

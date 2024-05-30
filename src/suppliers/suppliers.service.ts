@@ -1,26 +1,29 @@
-import { Injectable } from '@nestjs/common';
-import { CreateSupplierDto } from './dto/create-supplier.dto';
-import { UpdateSupplierDto } from './dto/update-supplier.dto';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { Supplier } from './entities/supplier.entity';
+import { SelectSupplierDto } from './dto/select-supplier.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { RmSku } from '../orders/entities/rmsku.entity';
+
 
 @Injectable()
 export class SuppliersService {
-  create(createSupplierDto: CreateSupplierDto) {
-    return 'This action adds a new supplier';
+  constructor(
+    // @InjectRepository(Supplier) private supplierRepository:Repository<Supplier>,
+    // @InjectRepository(RmSku) private rmskuRepository: Repository<RmSku>,
+  ){}
+
+  async rankSuppliers(dto:SelectSupplierDto):Promise<any>{
+    return dto;
   }
 
-  findAll() {
-    return `This action returns all suppliers`;
+  async getRmInventoryData(rmsku:string): Promise<{message: any; data:any}>{
+
+    if(!rmsku){
+      throw new BadRequestException("RM Sku is invalid or undefiend")
+    }
+
+    
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} supplier`;
-  }
-
-  update(id: number, updateSupplierDto: UpdateSupplierDto) {
-    return `This action updates a #${id} supplier`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} supplier`;
-  }
 }

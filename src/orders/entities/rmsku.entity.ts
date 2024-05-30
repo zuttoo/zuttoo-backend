@@ -40,6 +40,9 @@ export class RmSku extends DefaultEntity{
     @Column({nullable:true})
     inventory: number;
 
+    @Column({nullable:true})
+    rmRequiredQty:number;
+
     @ManyToOne(()=>OrderLineItem, (orderLineItem)=>orderLineItem.rmsku, {nullable:true})
     orderLineItems: OrderLineItem[];
 

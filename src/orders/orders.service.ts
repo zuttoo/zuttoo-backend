@@ -5,9 +5,13 @@ import {Order} from './entities/index';
 import { GetOrderDto } from './dto';
 
 
+
 @Injectable()
 export class OrdersService {
-  constructor(@InjectRepository(Order) private readonly orderRepository: Repository<Order>){}
+  constructor(@InjectRepository(Order) private readonly orderRepository: Repository<Order>,
+             
+  
+){}
   
   async getOrders(
   dto:GetOrderDto,
@@ -41,4 +45,6 @@ export class OrdersService {
 
 
   }
+
+  async getRmInventory()
 }

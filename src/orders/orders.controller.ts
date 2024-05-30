@@ -11,7 +11,6 @@ export class OrdersController {
   async getOrders(
     @Query() queryParams: GetOrderDto,
   ){
-    console.log(queryParams);
     return await this.ordersService.getOrders(queryParams);
   }
 }
