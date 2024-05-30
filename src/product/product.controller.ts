@@ -1,34 +1,35 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { GetProductDto } from './dto/get-product.dto';
+import { GetSkuDto } from './dto/get-product-sku.dto';
 
-@Controller('product')
+
+@Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productService.create(createProductDto);
-  }
-
   @Get()
-  findAll() {
-    return this.productService.findAll();
+  @UsePipes(new ValidationPipe({transform:true}))
+  async getAllProducts(
+    @Query() queryParams:GetProductDto
+  ){
+    return await this.productService.getAllProducts(queryParams.clientId, queryParams.type);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productService.findOne(+id);
+  @Get('skus')
+  @UsePipes(new ValidationPipe({transform:true}))
+  async getAllSkuForProduct(
+    @Query() queryParams:GetSkuDto
+  ){
+    return await this.productService.getAllSkuForProduct(queryParams.clientId,queryParams.productId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productService.update(+id, updateProductDto);
+  @Get('inventory/:fgskuId')
+  @UsePipes(new ValidationPipe({transform:true}))
+  async getInventory(
+    @Param('fgskuId') fgskuId:string
+  ){
+    return await this.productService.getInventory(fgskuId)
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productService.remove(+id);
-  }
 }

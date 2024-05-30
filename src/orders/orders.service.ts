@@ -46,5 +46,5 @@ export class OrdersService {
 
   }
 
-  async getRmInventory()
+ 
 }

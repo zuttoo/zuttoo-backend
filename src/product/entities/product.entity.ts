@@ -4,12 +4,25 @@ import { FgSku } from "src/orders/entities/fgsku.entity";
 import { SFGSku } from "src/orders/entities/sfgsku.entity";
 import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 
+export enum ProductType{
+    FG='FG',
+    SFG='SFG',
+    RM='RM'
+}
 @Entity()
 export class Product extends DefaultEntity{
     @Column({
         nullable:true
     })
     name: string;
+
+    @Column({
+        type:'enum',
+        nullable:true,
+        enum:ProductType,
+        
+    })
+    type:typeof ProductType;
 
     @ManyToOne(()=>Client, (client)=>client.product,{nullable:true})
     client:Client[];

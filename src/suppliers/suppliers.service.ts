@@ -13,17 +13,6 @@ export class SuppliersService {
     // @InjectRepository(RmSku) private rmskuRepository: Repository<RmSku>,
   ){}
 
-  async rankSuppliers(dto:SelectSupplierDto):Promise<any>{
-    return dto;
-  }
 
-  async getRmInventoryData(rmsku:string): Promise<{message: any; data:any}>{
-
-    if(!rmsku){
-      throw new BadRequestException("RM Sku is invalid or undefiend")
-    }
-
-    
-  }
 
 }
