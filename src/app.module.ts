@@ -13,6 +13,7 @@ import { AuthModule } from './auth/auth.module';
 import { MailModule } from './Mail/Mail.module';
 import { OrdersModule } from './orders/orders.module';
 import { ProductModule } from './product/product.module';
+import { SupplychainIssueModule } from './supplychain-issue/supplychain-issue.module';
 
 
 @Module({
@@ -28,6 +29,7 @@ import { ProductModule } from './product/product.module';
     OrdersModule,
     OemsModule,
     ProductModule,
+    SupplychainIssueModule,
    
   ],
   controllers: [AppController],
