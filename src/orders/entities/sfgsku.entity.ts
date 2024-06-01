@@ -27,6 +27,9 @@ export class SFGSku extends DefaultEntity{
     fgRequiredQty:number;
 
     @Column({nullable:true})
+    rmRequiredQty:number;
+
+    @Column({nullable:true})
     inventory: number;
 
     @ManyToOne(()=>Client, (Client)=>Client.fgSku,{nullable:true})

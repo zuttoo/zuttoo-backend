@@ -8,6 +8,19 @@ import { FgSku } from 'src/orders/entities/fgsku.entity';
 import { SFGSku } from 'src/orders/entities/sfgsku.entity';
 import { RmSku } from 'src/orders/entities/rmsku.entity';
 
+interface TransformedInventoryData{
+  sfg: {
+    sfg_materialdescription: string;
+    sfg_inventory: number;
+    sfg_fgrequired: number;
+    sfg_rmrequired: number;
+  },
+  rm: {
+    rm_materialdescription: string;
+    rm_inventory: number;
+  };
+}
+
 @Injectable()
 export class ProductService {
  constructor(
@@ -99,32 +112,47 @@ async getAllSkuForProduct(clientId:string, productId:string):Promise<{message:st
 
 }
 
-async getInventory(fgskuId:string):Promise<{message:string, data:any, count:number}>{
+async getInventory(materialDescription:string):Promise<{ data:TransformedInventoryData[], count:number}>{
 
-  if(!fgskuId){
-    throw new BadRequestException("Invalid FG SKU Id");
+  if(!materialDescription){
+    throw new BadRequestException("Invalid FG SKU");
   }
   const result=await this.sfgskuRepository
             .createQueryBuilder('sfg')
             .select([
               'sfg.materialDescription AS sfg_materialDescription',
               'sfg.inventory AS sfg_inventory',
-              // 'rm.id AS rm_id',
+              'sfg.fgRequiredQty AS sfg_fgrequired',
+              'sfg.rmRequiredQty AS sfg_rmrequired',
               'rm.materialDescription as rm_materialDescription',
               'rm.inventory AS rm_inventory',
             ])
             .leftJoin('sfg.fgsku', 'fg')
             .leftJoin('sfg.rmsku', 'rm')
-            .andWhere('fg.id= :fgskuId', {fgskuId})
+            .andWhere('fg.materialDescription= :materialDescription', {materialDescription})
             .getRawAndEntities();
             console.log(result);
     
+    
+    const transformedResult: TransformedInventoryData[]=result.raw.map((item)=> ({
+      sfg: {
+        sfg_materialdescription: item.sfg_materialdescription,
+        sfg_inventory: item.sfg_inventory,
+        sfg_fgrequired: item.sfg_fgrequired,
+        sfg_rmrequired: item.sfg_rmrequired,
+      },
+      rm: {
+        rm_materialdescription: item.rm_materialdescription,
+        rm_inventory: item.rm_inventory,
+      },
+    }));
     return {
-      message:"Successfully fetched inventory",
-      data:result.raw,
+      data:transformedResult,
       count:result.raw.length
     }
 
 }
+
+
 
 }

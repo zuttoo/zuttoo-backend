@@ -11,5 +11,6 @@ import { SFGSku } from 'src/orders/entities/sfgsku.entity';
   imports:[TypeOrmModule.forFeature([Product,FgSku,RmSku, SFGSku])],
   controllers: [ProductController],
   providers: [ProductService],
+  exports:[TypeOrmModule, ProductService]
 })
 export class ProductModule {}

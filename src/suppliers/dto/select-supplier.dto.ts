@@ -21,7 +21,7 @@ export class SelectSupplierDto {
 
     @IsString()
     @IsNotEmpty()
-    productSku:string;
+    fgsku:string;
 
     @IsNotEmpty()
     @IsNumber()
@@ -34,7 +34,7 @@ export class SelectSupplierDto {
 
     @IsEnum(PriorityEnum)
     @IsString()
-    priority?:string;
+    priority?:PriorityEnum;
 
     @IsDateString()
     expectedDeliveryDate:Date;
