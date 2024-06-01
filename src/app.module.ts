@@ -12,6 +12,7 @@ import { AddressesModule } from './addresses/addresses.module';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './Mail/Mail.module';
 import { OrdersModule } from './orders/orders.module';
+import { ProductModule } from './product/product.module';
 
 
 @Module({
@@ -26,6 +27,7 @@ import { OrdersModule } from './orders/orders.module';
     // MailModule,
     OrdersModule,
     OemsModule,
+    ProductModule,
    
   ],
   controllers: [AppController],
