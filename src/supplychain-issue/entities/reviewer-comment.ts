@@ -18,7 +18,7 @@ export class ReviewerComment extends DefaultEntity{
     @OneToOne(()=>User, {nullable:true})
     reviewer:typeof User
 
-    @ManyToOne(()=>SupplyChainIssue, (sci)=>sci.reviewerComments, {nullable:true})
-    scIssues:typeof SupplyChainIssue;
+    // @ManyToOne(()=>SupplyChainIssue, (sci)=>sci.reviewerComments, {nullable:true})
+    // scIssues:typeof SupplyChainIssue;
 
 }

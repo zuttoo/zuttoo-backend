@@ -71,16 +71,7 @@ export class SupplyChainIssue extends DefaultEntity {
 
     // @OneToMany(()=>ReviewerComment, (reviewerComment)=>reviewerComment.scIssues)
     // reviewerComments:ReviewerComment[];
-
-
-
-
-
-
-
-
-    
-
-    
+    @Column({nullable:true})
+    attachmentS3Link:string;
 
 }
