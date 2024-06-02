@@ -16,6 +16,8 @@ import {
   import { Order } from 'src/orders/entities/order.entity';
   import { RmSku } from '../../orders/entities/rmsku.entity';
 import { RmSkuSupplier } from './rmsku-supplier.entity';
+import { SupplyChainIssue } from 'src/supplychain-issue/entities/supplychain-issue.entity';
+import { SupplyChain } from 'aws-sdk';
   
   
   @Entity()
@@ -42,6 +44,10 @@ import { RmSkuSupplier } from './rmsku-supplier.entity';
     @ManyToMany(()=>RmSku, (rmsku)=>rmsku.rmskuSuppliers, {nullable:true})
   
     supplierRmSkus:RmSkuSupplier[];
+
+    @OneToMany(()=>SupplyChainIssue, (sci)=>sci.supplier, {nullable:true})
+    supplyChainIssues:SupplyChainIssue[];
+
 
 
   

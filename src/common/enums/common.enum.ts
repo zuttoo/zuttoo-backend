@@ -1,0 +1,15 @@
+export enum PriorityEnum{
+    URGENT='URGENT',
+    HIGH='HIGH',
+    MEDIUM='MEDIUM',
+    LOW='LOW'
+}
+
+export enum StatusEnum{
+    CONCERN_RAISED='CONCERN_RAISED',
+    RESOLVED='RESOLVED',
+    ACKNOWLEDGED='ACKNOWLEDGED',
+    ISSUE_DENIED='ISSUE_DENIED',
+    ARCHIVED='ARCHIVED'
+}
+
