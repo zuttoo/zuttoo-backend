@@ -1,6 +1,6 @@
 import { Client } from "src/clients/entities/client.entity";
 import { DefaultEntity } from "src/common/default.entity";
-import { Column, Entity, ManyToOne, OneToMany, OneToOne } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne } from "typeorm";
 import { SupplyChainIssueCategoryEnum,SupplyChainIssueDescriptionEnum,SupplyChainSubIssueEnum } from "../../common/enums/supplychain.enum";
 import { Supplier } from "src/suppliers/entities/supplier.entity";
 import { PriorityEnum, StatusEnum } from "src/common/enums/common.enum";
@@ -76,7 +76,8 @@ export class SupplyChainIssue extends DefaultEntity {
     @Column({nullable:true})
     notes:string;
 
-    @OneToMany(()=>User, (user)=>user.supplyChainIssues, {nullable:true})
+    @ManyToMany(()=>User, (user)=>user.supplyChainIssues, {nullable:true})
+    @JoinTable()
     reviewers:User[];
 
     @OneToMany(()=>Attachment, (attachment)=>attachment.supplyChainIssue, {nullable:true, cascade:true})

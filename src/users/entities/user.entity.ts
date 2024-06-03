@@ -1,5 +1,5 @@
 // eslint-disable-next-line prettier/prettier
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, JoinColumn, ManyToMany } from 'typeorm';
 import { Client } from '../../clients/entities/client.entity';
 import { Supplier } from '../../suppliers/entities/supplier.entity';
 import { Oem } from '../../oems/entities/oem.entity';
@@ -28,7 +28,7 @@ export class User extends DefaultEntity {
   @JoinColumn()
   oem: string;
 
-  @ManyToOne(()=>SupplyChainIssue, (supplyChainIssue)=>supplyChainIssue.reviewers, {nullable:true})
+  @ManyToMany(()=>SupplyChainIssue, (supplyChainIssue)=>supplyChainIssue.reviewers, {nullable:true})
   supplyChainIssues:SupplyChainIssue[];
 
   @Column()
@@ -47,5 +47,4 @@ export class User extends DefaultEntity {
   })
   role: string;
 
-  
 }
