@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.569.0",
+    "@aws-sdk/client-s3": "^3.588.0",
     "@aws-sdk/client-sesv2": "^3.569.0",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.2.2",
@@ -51,6 +52,7 @@
     "jsonwebtoken": "^9.0.2",
     "jwks-rsa": "^3.1.0",
     "luxon": "^3.4.4",
+    "mime-types": "^2.1.35",
     "mjml": "^4.15.3",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
@@ -68,6 +70,7 @@
     "@swc/core": "^1.4.13",
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.2",
+    "@types/multer": "^1.4.11",
     "@types/node": "^20.3.1",
     "@types/supertest": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
