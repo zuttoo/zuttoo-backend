@@ -15,7 +15,7 @@ import { FgSku } from 'src/orders/entities/fgsku.entity';
 import { RmSku } from 'src/orders/entities/rmsku.entity';
 import { Order } from 'src/orders/entities/order.entity';
 import { Product } from 'src/product/entities/product.entity';
-import { SupplyChainIssue, SupplychainIssue } from 'src/supplychain-issue/entities/supplychain-issue.entity';
+import { SupplyChainIssue } from 'src/supplychain-issue/entities/supplychain-issue.entity';
 @Entity()
 export class Client extends DefaultEntity {
 

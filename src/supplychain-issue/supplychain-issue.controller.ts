@@ -1,34 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator } from '@nestjs/common';
 import { SupplychainIssueService } from './supplychain-issue.service';
 import { CreateSupplychainIssueDto } from './dto/create-supplychain-issue.dto';
 import { UpdateSupplychainIssueDto } from './dto/update-supplychain-issue.dto';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
-@Controller('supplychain-issue')
+@Controller('supplychain/issues')
 export class SupplychainIssueController {
-  constructor(private readonly supplychainIssueService: SupplychainIssueService) {}
+  constructor(private readonly supplyChainIssueService: SupplychainIssueService) {}
 
   @Post()
-  create(@Body() createSupplychainIssueDto: CreateSupplychainIssueDto) {
-    return this.supplychainIssueService.create(createSupplychainIssueDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.supplychainIssueService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.supplychainIssueService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSupplychainIssueDto: UpdateSupplychainIssueDto) {
-    return this.supplychainIssueService.update(+id, updateSupplychainIssueDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.supplychainIssueService.remove(+id);
-  }
+    @UseInterceptors(FileFieldsInterceptor([{ name: 'attachments', maxCount: 10 }]))
+    async createSupplyChainIssue(
+        @Body() createSupplyChainIssueDto: CreateSupplychainIssueDto,
+        @UploadedFiles() files: { attachments?: Express.Multer.File[] },
+    ) {
+        const attachments = files.attachments || [];
+        const supplyChainIssue = await this.supplyChainIssueService.createSupplyChainIssue(
+            createSupplyChainIssueDto,
+            attachments,
+        );
+        return supplyChainIssue;
+    }
 }
