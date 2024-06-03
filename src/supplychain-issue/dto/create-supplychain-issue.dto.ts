@@ -1,6 +1,8 @@
+import { Type } from "class-transformer";
 import { IsArray, IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { PriorityEnum, StatusEnum} from "src/common/enums/common.enum";
 import { SupplyChainIssueCategoryEnum, SupplyChainIssueDescriptionEnum, SupplyChainSubIssueEnum } from "src/common/enums/supplychain.enum";
+import { User } from "src/users/entities/user.entity";
 export class CreateSupplychainIssueDto {
 
     @IsString()
@@ -53,10 +55,19 @@ export class CreateSupplychainIssueDto {
 
     @IsString()
     @IsOptional()
+    notes:string;
+
+    @IsString()
+    @IsOptional()
     supplierId:string;
 
     @IsOptional()
-    // @IsArray()
+    @IsArray()
     attachments?:Express.Multer.File[];
+
+    @IsOptional()
+    // @IsArray()
+    @Type(()=>User)
+    reviewers?:User[];
 
 }

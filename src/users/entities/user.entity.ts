@@ -4,6 +4,7 @@ import { Client } from '../../clients/entities/client.entity';
 import { Supplier } from '../../suppliers/entities/supplier.entity';
 import { Oem } from '../../oems/entities/oem.entity';
 import { DefaultEntity } from '../../common/default.entity';
+import { SupplyChainIssue } from 'src/supplychain-issue/entities/supplychain-issue.entity';
 export enum UserRole {
   ADMIN = 'ADMIN',
   USER = 'USER',
@@ -26,6 +27,9 @@ export class User extends DefaultEntity {
   @ManyToOne(() => Oem, { nullable: true })
   @JoinColumn()
   oem: string;
+
+  @ManyToOne(()=>SupplyChainIssue, (supplyChainIssue)=>supplyChainIssue.reviewers, {nullable:true})
+  supplyChainIssues:SupplyChainIssue[];
 
   @Column()
   name: string;

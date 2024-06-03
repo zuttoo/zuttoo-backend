@@ -6,6 +6,7 @@ import { Supplier } from "src/suppliers/entities/supplier.entity";
 import { PriorityEnum, StatusEnum } from "src/common/enums/common.enum";
 import { ReviewerComment } from "./reviewer-comment";
 import { Attachment } from "./attachment.entity";
+import { User } from "src/users/entities/user.entity";
 
 @Entity()
 export class SupplyChainIssue extends DefaultEntity {
@@ -72,6 +73,11 @@ export class SupplyChainIssue extends DefaultEntity {
 
     // @OneToMany(()=>ReviewerComment, (reviewerComment)=>reviewerComment.scIssues)
     // reviewerComments:ReviewerComment[];
+    @Column({nullable:true})
+    notes:string;
+
+    @OneToMany(()=>User, (user)=>user.supplyChainIssues, {nullable:true})
+    reviewers:User[];
 
     @OneToMany(()=>Attachment, (attachment)=>attachment.supplyChainIssue, {nullable:true, cascade:true})
     attachments:Attachment[];
