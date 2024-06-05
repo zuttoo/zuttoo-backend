@@ -1,5 +1,6 @@
 import { DefaultEntity } from "src/common/default.entity";
-import { Column, Entity} from "typeorm";
+import { Column, Entity, OneToOne} from "typeorm";
+import { OrderLineItem } from "./order-lineitem.entity";
 
 export enum RMStageStatus{
     PO_ISSUED="PO_ISSUED",
@@ -45,8 +46,6 @@ export class RmSkuStage extends DefaultEntity{
     })
     actualProcessingDate:Date;
 
-
-    
     @Column({
         type:'timestamptz',
         nullable:true
@@ -60,14 +59,6 @@ export class RmSkuStage extends DefaultEntity{
     })
     actualPackagingDate:Date;
 
-    
-    @Column({
-        type:'timestamptz',
-        nullable:true
-    })
-    actualProcessingdate:Date;
-
-    
     @Column({
         type:'timestamptz',
         nullable:true
@@ -154,4 +145,7 @@ export class RmSkuStage extends DefaultEntity{
         nullable:true
     })
     excalationLevel:number;
+
+    @OneToOne(()=>OrderLineItem, {nullable:true})
+    orderLineItem:typeof OrderLineItem;
 }

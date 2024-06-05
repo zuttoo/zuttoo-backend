@@ -18,6 +18,7 @@ export enum Uom {
 }
 
 export enum MaterialType{
+    ALL='ALL',
     RM='RM',
     SFG='SFG',
     FG='FG',
