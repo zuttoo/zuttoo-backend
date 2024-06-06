@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UsePipes, Val
 import { OrdersService } from './orders.service';
 import { SkuService } from './sku.service';
 import { GetOrderDto } from './dto';
+import { GetConsignmentDto } from './dto/get-consignment.dto';
 
 @Controller('orders')
 export class OrdersController {
@@ -15,6 +16,14 @@ export class OrdersController {
     @Query() queryParams: GetOrderDto,
   ){
     return await this.ordersService.getOrders(queryParams);
+  }
+
+  @Get('track-consignment')
+  @UsePipes(new ValidationPipe({transform:true}))
+  async trackConsignment(
+    @Query() queryParams: GetConsignmentDto
+  ){
+    return await this.ordersService.trackConsignment(queryParams);
   }
 
   @Get('rmsku')
