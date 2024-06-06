@@ -144,7 +144,7 @@ export class RmSkuStage extends DefaultEntity{
         type:'int4',
         nullable:true
     })
-    excalationLevel:number;
+    escalationLevel:number;
 
     @OneToOne(()=>OrderLineItem, {nullable:true})
     orderLineItem:typeof OrderLineItem;

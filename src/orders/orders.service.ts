@@ -6,6 +6,8 @@ import { OrderLineItem } from './entities/order-lineitem.entity';
 import { RmSku } from './entities/rmsku.entity';
 import { RmSkuStage } from './entities/rmskustage.entity';
 import { GetOrderDto } from './dto';
+import { DefaultDto } from 'src/common/default.dto';
+import { GetConsignmentDto } from './dto/get-consignment.dto';
 
 
 
@@ -78,9 +80,48 @@ async getOrders(dto: GetOrderDto): Promise<{
   };
 }
 
-  //fetch each individual
-  // async getOrderRmSkuStage(
-    
-  // )
+  //track consignment endpoint
+  async trackConsignment(dto:GetConsignmentDto):Promise<{
+    data:Order[];
+    totalCount:number;
+    currentPage: number;
+    totalPages:number;
+  
+  
+  }>{
+    const {clientId,page, limit, orderId}= dto;
+
+    const skip=(page-1) *limit;
+    const take=limit;
+
+    const query=this.orderRepository
+        .createQueryBuilder('o')
+        .where('o.id= :orderId', {orderId})
+        .andWhere('o.clientId= :clientId',{clientId})
+        .leftJoinAndSelect('o.orderLineItem', 'oli')
+        .leftJoinAndSelect('oli.rmsku', 'rm')
+        .leftJoinAndSelect('oli.rmskustage', 'rmskustage')
+
+        const [orders, totalCount]=await query
+            .skip(skip)
+            .take(take)
+            .select([
+              'o.id',
+              'oli.id',
+              'oli.rmskuId',
+              'rm.materialDescription',
+              'rmskustage'
+
+            ])
+            .getManyAndCount();
+
+        return{
+          data:orders,
+          totalCount,
+          currentPage:page,
+          totalPages:Math.ceil(totalCount/limit)
+        }
+  }
+  
  
 }
