@@ -21,7 +21,7 @@ export class SelectSupplierDto {
 
     @IsString()
     @IsNotEmpty()
-    fgsku:string;
+    fgskuId:string;
 
     @IsNotEmpty()
     @IsNumber()

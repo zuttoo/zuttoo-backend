@@ -1,6 +1,7 @@
 import { Client } from "src/clients/entities/client.entity";
 import { DefaultEntity } from "src/common/default.entity";
 import { FgSku } from "src/orders/entities/fgsku.entity";
+import { RmSku } from "src/orders/entities/rmsku.entity";
 import { SFGSku } from "src/orders/entities/sfgsku.entity";
 import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 
@@ -33,4 +34,6 @@ export class Product extends DefaultEntity{
     @OneToMany(()=>SFGSku, (sfgsku)=>sfgsku.product, {nullable:true})
     sfgsku:SFGSku[];
 
+    @OneToMany(()=>RmSku, (rmsku)=>rmsku.product,{nullable:true})
+    rmsku:RmSku[];
 }
