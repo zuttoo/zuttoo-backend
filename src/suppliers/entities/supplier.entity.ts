@@ -15,9 +15,9 @@ import {
   import { Client } from '../../clients/entities/client.entity';
   import { Order } from 'src/orders/entities/order.entity';
   import { RmSku } from '../../orders/entities/rmsku.entity';
-import { RmSkuSupplier } from './rmsku-supplier.entity';
-import { SupplyChainIssue } from 'src/supplychain-issue/entities/supplychain-issue.entity';
-import { SupplyChain } from 'aws-sdk';
+  import { RmSkuSupplier } from './rmsku-supplier.entity';
+  import { SupplyChainIssue } from 'src/supplychain-issue/entities/supplychain-issue.entity';
+
   
   
   @Entity()
@@ -34,7 +34,25 @@ import { SupplyChain } from 'aws-sdk';
     @ManyToMany(() => Client, (client) => client.suppliers, {nullable:true})
     @JoinTable()
     clients: Client[];
+    
+    @Column({nullable:true})
+    totalDeliveryCount:number;
+
+    @Column({nullable:true})
+    perfectDeliveryCount:number;
+
+    @Column({nullable:true})
+    turnAroundTimeRm:number;
+
+    @Column({nullable:true})
+    productionDisruptionCount:number;
   
+    @Column({nullable:true})
+    lostRevenueDisruptionCount:number;
+  
+    @Column({type:'float', nullable:true})
+    rating:number;
+
     @OneToMany(() => User, (user) => user.supplier, {nullable:true})
     users: User[];
   
@@ -50,7 +68,6 @@ import { SupplyChain } from 'aws-sdk';
 
 
 
-  
   
   }
   

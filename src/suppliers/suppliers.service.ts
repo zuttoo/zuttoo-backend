@@ -135,4 +135,8 @@ export class SuppliersService {
     }
   }
 
+  async getSupplierParams(){
+    
+  }
+
 }
