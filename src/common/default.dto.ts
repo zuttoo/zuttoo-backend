@@ -5,7 +5,6 @@ import { toNumber } from "./helper/cast.helper";
 export class DefaultDto {
 
     @IsString()
-    @IsOptional()
     clientId?: string;
   
     @Transform(({ value }) => toNumber(value, { default: 1, min: 1 }))

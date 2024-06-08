@@ -7,7 +7,6 @@ const { host, port, username, password, database, caFilePath } = config.get('aws
 
 export const typeOrmConfig = new DataSource({
   type: 'postgres',
-  // url: dbUrl,
   host: host,
   port: parseInt(port),
   username: username,
