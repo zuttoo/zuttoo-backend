@@ -23,6 +23,15 @@ export class Oem extends DefaultEntity {
   @Column()
   name: string;
 
+  @Column({nullable:true})
+  totalDeliveryCount:number;
+
+  @Column({nullable:true})
+  perfectDeliveryCount:number;
+
+  @Column({type:'float', nullable:true})
+  rating:number;
+
   @OneToOne(() => Address)
   @JoinColumn()
   address: Address;

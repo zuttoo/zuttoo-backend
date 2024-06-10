@@ -9,15 +9,24 @@ import { SFGSku } from 'src/orders/entities/sfgsku.entity';
 import { RmSku } from 'src/orders/entities/rmsku.entity';
 
 interface TransformedInventoryData{
+  fg:{
+    fg_id:string;
+    fg_materialNumber:string;
+    fg_materialDescription:string;
+    fg_inventory:number;
+    fg_sfgRequired:number;
+
+  },
   sfg: {
-    sfg_materialdescription: string;
+    sfg_materialDescription: string;
     sfg_inventory: number;
-    sfg_fgrequired: number;
-    sfg_rmrequired: number;
+    sfg_rmRequired: number;
   },
   rm: {
-    rm_materialdescription: string;
+    rm_materialDescription: string;
+    rm_materialGrade:string;
     rm_inventory: number;
+
   };
 }
 
@@ -89,7 +98,7 @@ export class ProductService {
   };
 }
 
-async getAllSkuForProduct(clientId:string, productId:string):Promise<{message:string, data:FgSku[], count:number}>{
+async getAllSkuForProduct(clientId:string, productId:string):Promise<{message:string, productSkus:FgSku[], count:number}>{
   if(!productId || !clientId){
     throw new BadRequestException('Invalid Product Id')
   }
@@ -104,7 +113,7 @@ async getAllSkuForProduct(clientId:string, productId:string):Promise<{message:st
 
   return{
     message:"Successfully Fetched relevant FG SKUs",
-    data:data,
+    productSkus:data,
     count:count
   }
 
@@ -112,37 +121,49 @@ async getAllSkuForProduct(clientId:string, productId:string):Promise<{message:st
 
 }
 
-async getInventory(materialDescription:string):Promise<{ data:TransformedInventoryData[], count:number}>{
+async getInventory(fgSkuId:string):Promise<{ data:TransformedInventoryData[], count:number}>{
 
-  if(!materialDescription){
-    throw new BadRequestException("Invalid FG SKU");
-  }
+
   const result=await this.sfgskuRepository
             .createQueryBuilder('sfg')
             .select([
-              'sfg.materialDescription AS sfg_materialDescription',
-              'sfg.inventory AS sfg_inventory',
-              'sfg.fgRequiredQty AS sfg_fgrequired',
-              'sfg.rmRequiredQty AS sfg_rmrequired',
-              'rm.materialDescription as rm_materialDescription',
-              'rm.inventory AS rm_inventory',
+              'sfg.id',
+              'sfg.materialDescription',
+              'sfg.inventory',
+              'sfg.materialNumber',
+              'sfg.fgRequiredQty',
+              'sfg.rmRequiredQty',
+              'fg.materialDescription',
+              'fg.inventory',
+              'fg.materialNumber',
+              'rm.id',
+              'rm.inventory',
+              'rm.materialDescription',
+              'rm.materialGrade',
             ])
             .leftJoin('sfg.fgsku', 'fg')
             .leftJoin('sfg.rmsku', 'rm')
-            .andWhere('fg.materialDescription= :materialDescription', {materialDescription})
+            .where('fg.id = :fgSkuId', { fgSkuId })
             .getRawAndEntities();
-            console.log(result);
     
     
     const transformedResult: TransformedInventoryData[]=result.raw.map((item)=> ({
+      fg:{
+        fg_id:item.fg_id,
+        fg_materialNumber:item.fg_materialNumber,
+        fg_materialDescription:item.fg_materialDescription,
+        fg_inventory:item.fg_inventory,
+        fg_sfgRequired: item.sfg_fgRequiredQty,
+    
+      },
       sfg: {
-        sfg_materialdescription: item.sfg_materialdescription,
+        sfg_materialDescription: item.sfg_materialDescription,
         sfg_inventory: item.sfg_inventory,
-        sfg_fgrequired: item.sfg_fgrequired,
-        sfg_rmrequired: item.sfg_rmrequired,
+        sfg_rmRequired: item. sfg_rmRequiredQty,
       },
       rm: {
-        rm_materialdescription: item.rm_materialdescription,
+        rm_materialDescription: item.rm_materialDescription,
+        rm_materialGrade:item.rm_materialGrade,
         rm_inventory: item.rm_inventory,
       },
     }));

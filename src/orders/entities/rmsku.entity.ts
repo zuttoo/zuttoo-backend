@@ -5,6 +5,7 @@ import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany
 import { OrderLineItem } from "./order-lineitem.entity";
 import { SFGSku } from "./sfgsku.entity";
 import { RmSkuSupplier } from "src/suppliers/entities/rmsku-supplier.entity";
+import { Product } from "src/product/entities/product.entity";
 
 @Entity()
 export class RmSku extends DefaultEntity{
@@ -14,8 +15,8 @@ export class RmSku extends DefaultEntity{
     client: Client[];
 
 
-    @Column({nullable:true})
-    product:string;
+    @ManyToOne(()=>Product, (product)=>product.rmsku, {nullable:true})
+    product:Product[];
 
     @Column({nullable:true})
     materialDescription:string;

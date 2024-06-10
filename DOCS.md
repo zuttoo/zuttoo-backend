@@ -37,3 +37,8 @@ Inventory Data: From the product SKU as entered by the user,
                   Required FG SKU qty: Order Number
                   SFG qty: SFG nos for one FG * Total SFG
                   SFG Inventory Qty: SFG in the inventory
+
+Dashboard:
+   Supply Chain
+
+   GET dashboard/supply-savvy/:clientId?supplierId=${supplierName}&from=${lowerLimit}&to=${upperLimit}

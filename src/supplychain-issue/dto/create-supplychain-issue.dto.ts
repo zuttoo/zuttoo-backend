@@ -1,11 +1,12 @@
 import { Type } from "class-transformer";
-import { IsArray, IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsArray, IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
 import { PriorityEnum, StatusEnum} from "src/common/enums/common.enum";
 import { SupplyChainIssueCategoryEnum, SupplyChainIssueDescriptionEnum, SupplyChainSubIssueEnum } from "src/common/enums/supplychain.enum";
 import { User } from "src/users/entities/user.entity";
 export class CreateSupplychainIssueDto {
 
     @IsString()
+    @IsUUID()
     @IsOptional()
     clientId:string;
 
