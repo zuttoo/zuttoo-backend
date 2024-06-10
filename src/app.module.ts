@@ -13,7 +13,7 @@ import { AuthModule } from './auth/auth.module';
 import { MailModule } from './Mail/Mail.module';
 import { OrdersModule } from './orders/orders.module';
 import { ProductModule } from './product/product.module';
-import { SupplychainIssueModule } from './supplychain-issue/supplychain-issue.module';
+import { SupplyChainIssueModule } from './supplychain-issue/supplychain-issue.module';
 
 
 @Module({
@@ -29,7 +29,7 @@ import { SupplychainIssueModule } from './supplychain-issue/supplychain-issue.mo
     OrdersModule,
     OemsModule,
     ProductModule,
-    SupplychainIssueModule,
+    SupplyChainIssueModule,
    
   ],
   controllers: [AppController],

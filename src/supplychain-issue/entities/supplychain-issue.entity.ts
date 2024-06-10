@@ -23,7 +23,6 @@ export class SupplyChainIssue extends DefaultEntity {
     @Column({nullable:true})
     materialNumber:string;
 
-
     @Column({nullable:true})
     purchaseOrderNumber:string;
 
@@ -82,7 +81,7 @@ export class SupplyChainIssue extends DefaultEntity {
     reviewers:User[];
 
     @OneToMany(()=>Attachment, (attachment)=>attachment.supplyChainIssue, {nullable:true, cascade:true})
-    @JoinColumn()
+
     attachments:Attachment[];
 
 }
