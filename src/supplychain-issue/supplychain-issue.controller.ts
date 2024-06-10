@@ -18,7 +18,6 @@ export class SupplyChainIssueController {
     async getAllSupplyChainIssues(
         @Query() dto:GetSupplyChainIssuesDto
     ){
-        console.log(dto);
         return await this.supplyChainIssueService.getAllSupplyChainIssues(dto)
     }
 
@@ -36,7 +35,7 @@ export class SupplyChainIssueController {
         return supplyChainIssue;
     }
 
-    @Patch('issues/:id')
+  @Patch('issues/:id')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(FilesInterceptor('files', 5, { limits: { fileSize: 5 * 1024 * 1024 } })) // Max 5 files, 5MB each
   async updateSupplyChainIssue(
@@ -64,5 +63,11 @@ export class SupplyChainIssueController {
       @Body('priority') priority:PriorityEnum,
     ){
       return this.supplyChainIssueService.updateSupplyChainIssuePriority(id, priority)
+    }
+
+    @Delete('/issues/:id')
+    async softDelete(@Param('id') id: string) {
+      await this.supplyChainIssueService.softDelete(id);
+      return { message: `SupplyChainIssue with ID ${id} has been soft-deleted` };
     }
 }

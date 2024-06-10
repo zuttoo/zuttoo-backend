@@ -96,6 +96,7 @@ async getAllSupplyChainIssues(dto:GetSupplyChainIssuesDto):Promise<{issues:Suppl
   const [issues, totalCount]=await this.supplyChainIssueRepository
             .createQueryBuilder('supplychainissue')
             .where('supplychainissue.clientId= :clientId', {clientId})
+            .andWhere('supplychainissue.softDeletedAt IS NULL')
             .leftJoinAndSelect('supplychainissue.supplier', 'supplier')
             .skip(skip)
             .take(take)
@@ -160,6 +161,19 @@ async updateSupplyChainIssuePriority(id:string, priority:PriorityEnum):Promise<P
     }
 }
 
+async softDelete(id:string):Promise<void>{
+  const issue=await this.supplyChainIssueRepository.findOne({
+    where:{id},
+    withDeleted:true
+  });
+
+  if (!issue) {
+    throw new NotFoundException(`SupplyChainIssue with ID ${id} not found`);
+  }
+
+  await this.supplyChainIssueRepository.softRemove(issue);
+
+}
 private async deleteAttachment(id:string):Promise<void>{
   const attachment=await this.attachmentRepository.findOne({
     where:{id}
