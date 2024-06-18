@@ -14,6 +14,8 @@ import { MailModule } from './Mail/Mail.module';
 import { OrdersModule } from './orders/orders.module';
 import { ProductModule } from './product/product.module';
 import { SupplyChainIssueModule } from './supplychain-issue/supplychain-issue.module';
+import { QualityAssuranceModule } from './quality-assurance/quality-assurance.module';
+import { S3ServiceService } from './s3-service/s3-service.service';
 
 
 @Module({
@@ -30,9 +32,10 @@ import { SupplyChainIssueModule } from './supplychain-issue/supplychain-issue.mo
     OemsModule,
     ProductModule,
     SupplyChainIssueModule,
+    QualityAssuranceModule,
    
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, S3ServiceService],
 })
 export class AppModule {}
