@@ -37,4 +37,9 @@ export class AuthController {
   ){
     return this.authService.confirmPasswordResetCode(confirmCodeDto.email, confirmCodeDto.code, confirmCodeDto.newPassword);
   }
+
+  @Post('verify-jwt')
+  async verifyJwt(@Body('token') token:string){
+    return await this.authService.verifyJwt(token);
+  }
 }

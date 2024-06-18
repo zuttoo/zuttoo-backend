@@ -1,0 +1,13 @@
+export enum DefectTypeEnum{
+    WRINKILING='WRINKLING',
+    TEARING='TEARING',
+    INCOMPLETE_FORMING='INCOMPLETE_FORMING',
+    SURFACE_DEFECTS='SURFACE_DEFECTS'
+}
+
+export enum DefectSeverityEnum
+{
+    MINOR='MINOR',
+    MAJOR='MAJOR',
+    CRITICAL='CRITICAL'
+}

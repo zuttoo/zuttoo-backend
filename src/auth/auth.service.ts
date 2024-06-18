@@ -20,6 +20,7 @@ import {
   ConfirmForgotPasswordCommandOutput,
   AdminInitiateAuthCommandOutput
 } from '@aws-sdk/client-cognito-identity-provider';
+import { CognitoJwtVerifier } from "aws-jwt-verify";
 import { createHmac, privateDecrypt } from 'crypto';
 import { UsersService } from '../users/users.service';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -35,8 +36,6 @@ const { accessKey, secretKey, region } = config.get('awsConfig');
 @Injectable()
 export class AuthService {
   private cognitoClient: CognitoIdentityProviderClient;
-  
-
   constructor( 
     private usersService: UsersService,
     @InjectRepository(User) private userRepository:Repository<User>
@@ -47,6 +46,8 @@ export class AuthService {
         accessKeyId: accessKey,
         secretAccessKey: secretKey,
       },
+      
+      
     });
     
   }
@@ -322,5 +323,24 @@ export class AuthService {
       return null;
     } 
 
+  }
+
+  async verifyJwt(jwtToken:string):Promise<{data:Object}>{
+
+    const verifier=CognitoJwtVerifier.create({
+      userPoolId:cognitoUserPoolId,
+      tokenUse:'id',
+      clientId:cognitoClientId
+    });
+
+    try{
+      const payload=await verifier.verify(jwtToken);
+      return {
+        data:payload
+      };
+    }catch(error){
+      console.log("Token not valid");
+      throw new BadRequestException("Token Not Valid");
+    }
   }
 }
