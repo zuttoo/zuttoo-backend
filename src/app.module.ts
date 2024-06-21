@@ -10,6 +10,8 @@ import { SuppliersModule } from './suppliers/suppliers.module';
 import { OemsModule } from './oems/oems.module';
 import { AddressesModule } from './addresses/addresses.module';
 import { AuthModule } from './auth/auth.module';
+import { AuthGuard } from './auth/auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 import { MailModule } from './Mail/Mail.module';
 import { OrdersModule } from './orders/orders.module';
 import { ProductModule } from './product/product.module';

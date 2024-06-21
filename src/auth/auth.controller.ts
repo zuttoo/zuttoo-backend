@@ -1,6 +1,7 @@
-import { Controller, Post, Body, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Post, Body, UsePipes, ValidationPipe,Headers, Request, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
+
 
 @Controller('auth')
 export class AuthController {
@@ -39,7 +40,21 @@ export class AuthController {
   }
 
   @Post('verify-jwt')
-  async verifyJwt(@Body('token') token:string){
-    return await this.authService.verifyJwt(token);
+  async verifyJwt(@Body('token') token:string , @Body('intent') intent:string){
+    return await this.authService.verifyJwt(token,intent);
+  }
+
+  @Post('refresh-access-token')
+  async refreshAccessToken(
+    @Body('refreshToken') refreshToken:string,
+    @Body('accessToken') accessToken:string
+  ){
+    return await this.authService.refreshAccessToken(refreshToken,accessToken);
+  }
+  @Post('logout')
+  async logout(@Headers('refresh-token') refreshToken: string,
+                @Req() req:Request) {
+    console.log(req.headers);
+    return this.authService.logout(refreshToken);
   }
 }
