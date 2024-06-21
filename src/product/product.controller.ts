@@ -1,13 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, Query, UseGuards } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { GetProductDto } from './dto/get-product.dto';
 import { GetSkuDto } from './dto/get-product-sku.dto';
+import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
+
 
 
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+
+  @UseGuards(JwtGuard)
   @Get()
   @UsePipes(new ValidationPipe({transform:true}))
   async getAllProducts(

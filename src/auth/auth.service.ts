@@ -18,8 +18,12 @@ import {
   ConfirmForgotPasswordCommandInput,
   ConfirmForgotPasswordCommand,
   ConfirmForgotPasswordCommandOutput,
-  AdminInitiateAuthCommandOutput
+  AdminInitiateAuthCommandOutput,
+  RevokeTokenCommandInput,
+  RevokeTokenCommand
 } from '@aws-sdk/client-cognito-identity-provider';
+import { AuthGuard } from '@nestjs/passport'
+import { CognitoJwtVerifier } from "aws-jwt-verify";
 import { createHmac, privateDecrypt } from 'crypto';
 import { UsersService } from '../users/users.service';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -35,8 +39,6 @@ const { accessKey, secretKey, region } = config.get('awsConfig');
 @Injectable()
 export class AuthService {
   private cognitoClient: CognitoIdentityProviderClient;
-  
-
   constructor( 
     private usersService: UsersService,
     @InjectRepository(User) private userRepository:Repository<User>
@@ -47,6 +49,8 @@ export class AuthService {
         accessKeyId: accessKey,
         secretAccessKey: secretKey,
       },
+      
+      
     });
     
   }
@@ -121,7 +125,6 @@ export class AuthService {
     try {
       const command = new AdminInitiateAuthCommand(params);
       const response = await this.cognitoClient.send(command);
-      console.log(response);
       return {
         message:"Login Sucessful",
         data:response
@@ -240,26 +243,26 @@ export class AuthService {
     }
   }
 
-  async refreshAccessToken(refreshToken:string, idToken:string):Promise<{message:'Successfully generate access token'; accessToken:string; idToken:string; refreshToken:string}>{
-    const email=this.getEmailFromIdToken(idToken);
-    const secretHash=this.calculateSecretHash(email);
+  async refreshAccessToken(refreshToken:string, accessToken:string):Promise<{message:'Successfully generate access token'; accessToken:string; idToken:string; refreshToken:string}>{
+    const decryptedPayload=await this.verifyJwt(accessToken,"ACCESS");
+    const secretHash=this.calculateSecretHash(decryptedPayload.sub);
     const params:AdminInitiateAuthCommandInput={
       UserPoolId:cognitoUserPoolId,
       ClientId:cognitoClientId,
       AuthFlow:'REFRESH_TOKEN_AUTH',
       AuthParameters:{
         REFRESH_TOKEN: refreshToken,
-        SECRET_HASH: secretHash,
+        SECRET_HASH: secretHash,  
       },
     };
     const command=new AdminInitiateAuthCommand(params);
 
+ 
     try{
-      const response:AdminInitiateAuthCommandOutput=await this.cognitoClient.send(command);
-
+      const response=await this.cognitoClient.send(command);
       const {AuthenticationResult}=response;
       if(!AuthenticationResult){
-        throw new Error('Failed to refresh access token')
+        throw new Error('New Access Tokens and Id tokens could not be generated.')
       };
 
       return{
@@ -273,17 +276,7 @@ export class AuthService {
     }
   }
 
-  getEmailFromIdToken(idToken:string): string{
-    if(!idToken){
-      throw new Error('ID Token missing');
-    }
-    const decoded=jwt.decode(idToken) as {email?:string};
 
-    if(!decoded || !decoded.email){
-      throw new Error('Email not found in ID Token');
-    }
-    return decoded.email;
-  }
   private async updateUserAttributes(userId:string, attributes: {[key:string]: string}):Promise <any>{
     const params:AdminUpdateUserAttributesCommandInput={
       UserPoolId:cognitoUserPoolId,
@@ -322,5 +315,50 @@ export class AuthService {
       return null;
     } 
 
+  }
+
+  async logout(refreshToken:string):Promise<{message:string}>{
+    try{
+      // await this.verifyJwt(accessToken, 'ACCESS');
+
+      const params:RevokeTokenCommandInput={
+        Token:refreshToken,
+        ClientId:cognitoClientId,
+        ClientSecret:cognitoClientSecret,
+      }
+      const command=new RevokeTokenCommand(params);
+      await this.cognitoClient.send(command);
+      return {
+        message:'Logout Successful'
+      }
+
+    }catch(error){
+      throw new BadRequestException('Failed to Logout');
+    }
+  }
+
+  async verifyJwt(jwtToken:string, intent:string):Promise<any>{
+
+    let tokenUseIntent:any;
+    if(intent==="ID"){
+      tokenUseIntent='id'
+    }else if(intent==="ACCESS"){
+      tokenUseIntent='access'
+    }
+    const verifier=CognitoJwtVerifier.create({
+      userPoolId:cognitoUserPoolId,
+      tokenUse:tokenUseIntent,
+      clientId:cognitoClientId
+    });
+
+    try{
+      const payload=await verifier.verify(jwtToken);
+      
+      return payload
+      
+    }catch(error){
+      console.log("Token not valid");
+      throw new BadRequestException("Token Not Valid");
+    }
   }
 }
