@@ -2,20 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { CreateQualityAssuranceDto } from './dto/create-quality-assurance.dto';
 import { UpdateQualityAssuranceDto } from './dto/update-quality-assurance.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RmSkuCharacteristics } from './entities/rmsku-characteristics.entity';
+import { TestCertificate } from './entities/test-certificate.entity';
 import { Repository } from 'typeorm';
 import { CreateTestCertificateDto } from './dto/create-test-certificate.dto';
+import { OcrService } from 'src/ocr-service/ocr-service';
 
 @Injectable()
 export class QualityAssuranceService {
+  
   constructor(
-    @InjectRepository(RmSkuCharacteristics) private readonly rmSkuCharacteristicRepository:Repository<RmSkuCharacteristics>
+    private  ocrService:OcrService,
+    @InjectRepository(TestCertificate) private readonly testCertificateRepository:Repository<TestCertificate>
   ){}
 
-  async createTestCertificate(dto:CreateTestCertificateDto):Promise<any>{
-    return {
-      message:"Succssfully created test cerfiticate in the db",
-      data:dto
-    }
+  async processDocuments(file:Express.Multer.File):Promise<any>{
+    return await this.ocrService.processTestCertificate(file);
   }
+
 }

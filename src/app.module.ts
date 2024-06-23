@@ -17,7 +17,8 @@ import { OrdersModule } from './orders/orders.module';
 import { ProductModule } from './product/product.module';
 import { SupplyChainIssueModule } from './supplychain-issue/supplychain-issue.module';
 import { QualityAssuranceModule } from './quality-assurance/quality-assurance.module';
-import { S3ServiceService } from './s3-service/s3-service.service';
+import { S3Service } from './s3-service/s3-service';
+
 
 
 @Module({
@@ -38,6 +39,6 @@ import { S3ServiceService } from './s3-service/s3-service.service';
    
   ],
   controllers: [AppController],
-  providers: [AppService, S3ServiceService],
+  providers: [AppService],
 })
 export class AppModule {}
