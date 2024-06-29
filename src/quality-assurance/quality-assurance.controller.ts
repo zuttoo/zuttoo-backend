@@ -1,34 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { QualityAssuranceService } from './quality-assurance.service';
-import { CreateQualityAssuranceDto } from './dto/create-quality-assurance.dto';
-import { UpdateQualityAssuranceDto } from './dto/update-quality-assurance.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
-@Controller('quality-assurance')
+@Controller('qa')
 export class QualityAssuranceController {
   constructor(private readonly qualityAssuranceService: QualityAssuranceService) {}
 
-  @Post()
-  create(@Body() createQualityAssuranceDto: CreateQualityAssuranceDto) {
-    return this.qualityAssuranceService.create(createQualityAssuranceDto);
-  }
+  @Post('upload-document')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadDocument(@UploadedFile() file:Express.Multer.File){
 
-  @Get()
-  findAll() {
-    return this.qualityAssuranceService.findAll();
+    return await this.qualityAssuranceService.processDocuments(file);
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.qualityAssuranceService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateQualityAssuranceDto: UpdateQualityAssuranceDto) {
-    return this.qualityAssuranceService.update(+id, updateQualityAssuranceDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.qualityAssuranceService.remove(+id);
-  }
+  
 }

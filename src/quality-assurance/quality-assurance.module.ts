@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { QualityAssuranceService } from './quality-assurance.service';
 import { QualityAssuranceController } from './quality-assurance.controller';
-import { RmSkuCharacteristics } from './entities/rmsku-characteristics.entity';
+import { TestCertificate } from './entities/test-certificate.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { OcrService } from 'src/ocr-service/ocr-service';
+import { S3Service } from 'src/s3-service/s3-service';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([RmSkuCharacteristics])],
+  imports:[TypeOrmModule.forFeature([TestCertificate])],
   controllers: [QualityAssuranceController],
-  providers: [QualityAssuranceService],
+  providers: [QualityAssuranceService,OcrService,S3Service],
 })
 export class QualityAssuranceModule {}
