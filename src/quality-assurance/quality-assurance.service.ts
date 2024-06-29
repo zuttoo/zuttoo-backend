@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateQualityAssuranceDto } from './dto/create-quality-assurance.dto';
-import { UpdateQualityAssuranceDto } from './dto/update-quality-assurance.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TestCertificate } from './entities/test-certificate.entity';
 import { Repository } from 'typeorm';
