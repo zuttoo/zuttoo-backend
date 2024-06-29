@@ -1,0 +1,26 @@
+export class TestCertificateDto{
+    testCertificateNo:string;
+    doNo:string;
+    invoiceNo:string;
+    materialNo:string;
+    despatchDate:string;
+    customerCode:string;
+    vehicleNo:string;
+    product:string;
+    customer:string;
+    grade:string;
+    section:string;
+    chemicalAnalysis:{
+        [element:string]:number;
+    };
+    mechanicalAnalysis:{
+        yieldStrength?:number;
+        ultimateTensileStrength?:number;
+        elongation?:number;
+        bend?:string;
+    };
+    batchNo:string;
+    motherCoil:string;
+    castNo:string;
+    tonnage:number;
+}

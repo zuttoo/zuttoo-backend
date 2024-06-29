@@ -10,10 +10,15 @@ import { SuppliersModule } from './suppliers/suppliers.module';
 import { OemsModule } from './oems/oems.module';
 import { AddressesModule } from './addresses/addresses.module';
 import { AuthModule } from './auth/auth.module';
+import { AuthGuard } from './auth/auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 import { MailModule } from './Mail/Mail.module';
 import { OrdersModule } from './orders/orders.module';
 import { ProductModule } from './product/product.module';
 import { SupplyChainIssueModule } from './supplychain-issue/supplychain-issue.module';
+import { QualityAssuranceModule } from './quality-assurance/quality-assurance.module';
+import { S3Service } from './s3-service/s3-service';
+
 
 
 @Module({
@@ -30,6 +35,7 @@ import { SupplyChainIssueModule } from './supplychain-issue/supplychain-issue.mo
     OemsModule,
     ProductModule,
     SupplyChainIssueModule,
+    QualityAssuranceModule,
    
   ],
   controllers: [AppController],
