@@ -1,34 +1,29 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { OptimaintainService } from './optimaintain.service';
-import { CreateOptimaintainDto } from './dto/create-optimaintain.dto';
-import { UpdateOptimaintainDto } from './dto/update-optimaintain.dto';
+import { CreateIssueDto } from './dto/create-maintenance-issue.dto';
+import { PriorityEnum, StatusEnum } from 'src/common/enums/common.enum';
 
 @Controller('optimaintain')
 export class OptimaintainController {
   constructor(private readonly optimaintainService: OptimaintainService) {}
 
   @Post()
-  create(@Body() createOptimaintainDto: CreateOptimaintainDto) {
-    return this.optimaintainService.create(createOptimaintainDto);
+  async createIssue(@Body() createIssueDto: CreateIssueDto) {
+    return this.optimaintainService.createIssue(createIssueDto);
   }
-
-  @Get()
-  findAll() {
-    return this.optimaintainService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.optimaintainService.findOne(+id);
-  }
-
+  
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOptimaintainDto: UpdateOptimaintainDto) {
-    return this.optimaintainService.update(+id, updateOptimaintainDto);
+  async updateIssue(@Param('id') id: string, @Body() updateIssueDto: Partial<CreateIssueDto>) {
+    return this.optimaintainService.updateIssue(id, updateIssueDto);
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.optimaintainService.remove(+id);
+  
+  @Patch(':id/status')
+  async updateStatus(@Param('id') id: string, @Body('status') status: StatusEnum) {
+    return this.optimaintainService.updateCompletionStatus(id, status);
+  }
+  
+  @Patch(':id/severity')
+  async updateSeverity(@Param('id') id: string, @Body('severity') severity: PriorityEnum) {
+    return this.optimaintainService.updateSeverityLevel(id, severity);
   }
 }

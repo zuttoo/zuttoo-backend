@@ -13,4 +13,8 @@ export enum StatusEnum{
     ARCHIVED='ARCHIVED',
     PENDING='PENDING'
 }
-
+export enum CommunicationChannel{
+    WHATSAPP='WHATSAPP',
+    EMAIL='EMAIL',
+    TEXT_MESSAGE='TEXT_MESSAGE'
+}

@@ -1,13 +1,20 @@
+import { Type } from "class-transformer";
 import { IsBoolean, IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { DefaultDto } from "src/common/default.dto";
-import { PriorityEnum, StatusEnum } from "src/common/enums/common.enum";
+import { CommunicationChannel, PriorityEnum, StatusEnum } from "src/common/enums/common.enum";
 import { MaintenanceTask, ShiftEnum, WorkstationEnum } from "src/common/enums/optimaintain.enum";
 
 export class CreateIssueDto extends DefaultDto{
+
+    @IsString()
+    @IsNotEmpty()
+    clientId?: string;
+
     @IsString()
     @IsNotEmpty()
     issueId:string;
 
+    @Type(()=>Date)
     @IsDate()
     issueDate:Date;
 
@@ -37,7 +44,17 @@ export class CreateIssueDto extends DefaultDto{
     @IsEnum(StatusEnum)
     completionStatus:string;
 
-    @IsDate()
+    @Type(()=>Date)
+    @IsDate()   
     scheduledCompletionDate:Date;
 
+    // @IsArray()
+    // @IsOptional()
+    // reviewers:string[];
+
+    @IsEnum(CommunicationChannel)
+    communicationChannel:string;
+    
+    @IsString()
+    reviewerRemarks:string;
 }
