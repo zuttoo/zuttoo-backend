@@ -27,5 +27,10 @@ export enum MaintenanceTask{
     
 
 }
-
+export enum EquipmentStatusEnum{
+    ONLINE='ONLINE',
+    OFFLINE='OFFLINE',
+    STANDBY='STANDBY',
+    UNKNOWN='UNKNOWN'
+}
 

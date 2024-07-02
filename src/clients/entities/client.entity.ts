@@ -16,6 +16,7 @@ import { RmSku } from 'src/orders/entities/rmsku.entity';
 import { Order } from 'src/orders/entities/order.entity';
 import { Product } from 'src/product/entities/product.entity';
 import { SupplyChainIssue } from 'src/supplychain-issue/entities/supplychain-issue.entity';
+import { ProcessLine } from 'src/optimaintain/entities/process-line.entity';
 @Entity()
 export class Client extends DefaultEntity {
 
@@ -40,6 +41,9 @@ export class Client extends DefaultEntity {
 
   @OneToMany(()=>FgSku, (FgSku)=>FgSku.client, {nullable:true})
   fgSku:FgSku[];
+
+  @OneToMany(()=>ProcessLine, processLine=>processLine.client);
+  processLines:ProcessLine[];
 
   
   @OneToMany(()=>RmSku, (RmSku)=>RmSku.client, {nullable:true})
