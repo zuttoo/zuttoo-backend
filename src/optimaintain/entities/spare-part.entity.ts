@@ -11,5 +11,5 @@ export class SparePart extends DefaultEntity{
     count:number;
 
     @ManyToOne(()=>Component, component=>component.spareParts)
-    equipment:typeof Component;
+    component:typeof Component;
 }

@@ -1,11 +1,19 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, Repository } from 'typeorm';
+import { DataSource, DeepPartial, Repository } from 'typeorm';
 import { MaintenanceIssue } from './entities/maintenance-issue.entity';
 import { CreateIssueDto } from './dto/create-maintenance-issue.dto';
 // import { PriorityEnum, StatusEnum, WorkstationEnum, ShiftEnum, MaintenanceTask, CommunicationChannel } from './enums';
 import { PriorityEnum, StatusEnum,CommunicationChannel} from 'src/common/enums/common.enum';
 import { WorkstationEnum, ShiftEnum, MaintenanceTask } from 'src/common/enums/optimaintain.enum';
+import { ProcessLine } from './entities/process-line.entity';
+import { Section } from './entities/section.entity';
+import { Equipment } from './entities/equipment.entity';
+import { SparePart } from './entities/spare-part.entity';
+import { Component } from './entities/component.entity';
+import { CreateProcessLineDto } from './dto/create-process-line.dto';
+import { query } from 'express';
+import { InternalErrorException } from '@aws-sdk/client-cognito-identity-provider';
 
 
 type UpdateIssueDto = {
@@ -16,6 +24,18 @@ export class OptimaintainService {
   constructor(
     @InjectRepository(MaintenanceIssue)
     private maintenanceIssueRepository: Repository<MaintenanceIssue>,
+    @InjectRepository(ProcessLine)
+    private processLineRepository:Repository<ProcessLine>,
+    @InjectRepository(Section)
+    private sectionRepository: Repository<Section>,
+    @InjectRepository(Equipment)
+    private equipmentRepository: Repository<Equipment>,
+    @InjectRepository(Component)
+    private componentRepository: Repository<Component>,
+    @InjectRepository(SparePart)
+    private sparePartRepository: Repository<SparePart>,
+    private dataSource:DataSource
+
   ) {}
 
   async createIssue(createDto: CreateIssueDto): Promise<MaintenanceIssue[]> {
@@ -47,6 +67,74 @@ export class OptimaintainService {
     }
     await this.maintenanceIssueRepository.update({ issueId }, { severityLevel });
     return await this.maintenanceIssueRepository.findOne({ where: { issueId } });
+  }
+
+  async createProcessLine(createProcessLineDto:CreateProcessLineDto):Promise<ProcessLine>{
+    const existingProcessLine=await this.processLineRepository.findOne({
+      where:{
+        name:createProcessLineDto.name
+      }
+    });
+    if(existingProcessLine){
+      throw new BadRequestException(`Process Line with name ${createProcessLineDto.name} already exists.`);
+    }
+    const queryRunner=this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+
+    // start transaction
+    await queryRunner.startTransaction();
+
+    try{
+      const processLine=this.processLineRepository.create({
+        name:createProcessLineDto.name,
+      });
+      await queryRunner.manager.save(processLine);
+
+      // create sections
+      for(const sectionDto of createProcessLineDto.sections){
+        const section=this.sectionRepository.create({
+          name:sectionDto.name,
+          processLine:processLine,
+          
+        });
+        await queryRunner.manager.save(section);
+
+        // Create Equipment
+        for(const equipmentDto of sectionDto.equipments){
+          const equipment=this.equipmentRepository.create({
+            ...equipmentDto,
+            section:section
+          });
+          await queryRunner.manager.save(equipment);
+
+          // create components
+          for(const componentDto of equipmentDto.components){
+            const component=this.componentRepository.create({
+              ...componentDto,
+              equipment:equipment
+
+            });
+            await queryRunner.manager.save(component);
+            // Create Spare Parts
+            for (const sparePartDto of componentDto.spareParts) {
+              const sparePart = this.sparePartRepository.create({
+                ...sparePartDto,
+                component:component
+              });
+              await queryRunner.manager.save(sparePart);
+            }
+          }
+        }
+      }
+      await queryRunner.commitTransaction();
+      return processLine;
+    }catch(err){
+      await queryRunner.rollbackTransaction();
+      throw new InternalServerErrorException('Failed to create process line');
+    }finally{
+      await queryRunner.release();
+    }
+
   }
 
   private async findIssueById(issueId: string): Promise<MaintenanceIssue> {

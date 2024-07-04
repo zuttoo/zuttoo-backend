@@ -42,7 +42,7 @@ export class Client extends DefaultEntity {
   @OneToMany(()=>FgSku, (FgSku)=>FgSku.client, {nullable:true})
   fgSku:FgSku[];
 
-  @OneToMany(()=>ProcessLine, processLine=>processLine.client);
+  @OneToMany(()=>ProcessLine, processLine=>processLine.client)
   processLines:ProcessLine[];
 
   

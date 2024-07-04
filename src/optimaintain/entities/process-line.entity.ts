@@ -8,7 +8,7 @@ export class ProcessLine extends DefaultEntity{
     @Column()
     name:string;
 
-    @ManyToOne(()=>Client, client=>client.processLines);
+    @ManyToOne(()=>Client, client=>client.processLines)
     client:typeof Client;
 
     @OneToMany(()=>Section, section=>section.processLine)

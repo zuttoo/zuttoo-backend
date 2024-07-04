@@ -12,7 +12,7 @@ export class Section extends DefaultEntity{
     processLine:typeof ProcessLine;
 
     @OneToMany(()=>Equipment, equipment=>equipment.section)
-    equipment:Equipment[];
+    equipments:Equipment[];
 
 
 }

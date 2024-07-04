@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { OptimaintainService } from './optimaintain.service';
 import { CreateIssueDto } from './dto/create-maintenance-issue.dto';
 import { PriorityEnum, StatusEnum } from 'src/common/enums/common.enum';
+import { CreateProcessLineDto } from './dto/create-process-line.dto';
 
 @Controller('optimaintain')
 export class OptimaintainController {
@@ -25,5 +26,9 @@ export class OptimaintainController {
   @Patch(':id/severity')
   async updateSeverity(@Param('id') id: string, @Body('severity') severity: PriorityEnum) {
     return this.optimaintainService.updateSeverityLevel(id, severity);
+  }
+  @Post('process-line')
+  createProcessLine(@Body() dto:CreateProcessLineDto){
+    return this.optimaintainService.createProcessLine(dto);
   }
 }
