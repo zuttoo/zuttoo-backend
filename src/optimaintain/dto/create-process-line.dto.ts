@@ -1,8 +1,10 @@
 import { Type } from "class-transformer";
 import { IsBoolean, IsDate, IsEnum, IsNumber, IsOptional, IsString, ValidateNested, ValidatePromise } from "class-validator";
+import { DefaultDto } from "src/common/default.dto";
 import { EquipmentStatusEnum } from "src/common/enums/optimaintain.enum";
 
-export class CreateSparePartDto{
+export class CreateSparePartDto extends DefaultDto{
+
     @IsString()
     name:string;
 
@@ -11,7 +13,9 @@ export class CreateSparePartDto{
     count?:number;
 }
 
-export class CreateComponentDto{
+export class CreateComponentDto extends DefaultDto{
+ 
+
     @IsString()
     name:string;
 
@@ -20,7 +24,8 @@ export class CreateComponentDto{
     spareParts:CreateSparePartDto[]
 }
 
-export class CreateEquipmentDto {
+export class CreateEquipmentDto extends DefaultDto{
+
     @IsString()
     name: string;
   
@@ -72,18 +77,20 @@ export class CreateEquipmentDto {
     @Type(() => CreateComponentDto)
     components: CreateComponentDto[];
   }
-export class CreateSectionDto{
+export class CreateSectionDto extends DefaultDto{
+
     @IsString()
     name:string;
 
     @ValidateNested({each:true})
     @Type(()=>CreateEquipmentDto)
     equipments:CreateEquipmentDto[];
-
+  id: any;
 
 }
 
-export class CreateProcessLineDto{
+export class CreateProcessLineDto extends DefaultDto{
+
     @IsString()
     name:string;
 

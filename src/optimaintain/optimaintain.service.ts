@@ -1,9 +1,8 @@
 import { Injectable, NotFoundException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, DeepPartial, Repository } from 'typeorm';
+import { DataSource, DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
 import { MaintenanceIssue } from './entities/maintenance-issue.entity';
 import { CreateIssueDto } from './dto/create-maintenance-issue.dto';
-// import { PriorityEnum, StatusEnum, WorkstationEnum, ShiftEnum, MaintenanceTask, CommunicationChannel } from './enums';
 import { PriorityEnum, StatusEnum,CommunicationChannel} from 'src/common/enums/common.enum';
 import { WorkstationEnum, ShiftEnum, MaintenanceTask } from 'src/common/enums/optimaintain.enum';
 import { ProcessLine } from './entities/process-line.entity';
@@ -12,8 +11,7 @@ import { Equipment } from './entities/equipment.entity';
 import { SparePart } from './entities/spare-part.entity';
 import { Component } from './entities/component.entity';
 import { CreateProcessLineDto } from './dto/create-process-line.dto';
-import { query } from 'express';
-import { InternalErrorException } from '@aws-sdk/client-cognito-identity-provider';
+import { UpdateProcessLineDto } from './dto/update-process-line.dto';
 
 
 type UpdateIssueDto = {
@@ -135,6 +133,135 @@ export class OptimaintainService {
       await queryRunner.release();
     }
 
+  }
+
+  async  updateProcessLine(id:string, updateProcessLineDto:UpdateProcessLineDto):Promise<any>{
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      // Find the existing ProcessLine
+      const processLine = await this.processLineRepository.findOne({ where: { id } as FindOptionsWhere<ProcessLine> });
+      if (!processLine) {
+        throw new NotFoundException(`Process line with ID "${id}" not found`);
+      }
+
+      // Update ProcessLine
+      processLine.name = updateProcessLineDto.name || processLine.name;
+      await queryRunner.manager.save(processLine);
+
+      // Update Sections
+      if (updateProcessLineDto.sections) {
+        const existingSections = await this.sectionRepository.find({ where: { processLine: { id: processLine.id } } });
+        const updatedSectionIds = updateProcessLineDto.sections?.map(s => s.id).filter(id => id);
+        
+        // Remove sections not in the update DTO
+        for (const section of existingSections) {
+          if (!updatedSectionIds.includes(section.id)) {
+            await queryRunner.manager.remove(section);
+          }
+        }
+
+        // Update or create sections
+        for (const sectionDto of updateProcessLineDto.sections) {
+          let section = sectionDto.id 
+            ? await this.sectionRepository.findOne({ where: { id: sectionDto.id } as FindOptionsWhere<Section> })
+            : this.sectionRepository.create();
+
+          section.name = sectionDto.name;
+          // section.processLine = processLine;
+          section = await queryRunner.manager.save(section);
+
+          // Update Equipment
+          if (sectionDto.equipments) {
+            const existingEquipment = await this.equipmentRepository.find({ where: { section: { id: section.id } } });
+            const updatedEquipmentIds = sectionDto.equipments.map(e => e.id).filter(id => id);
+
+            // Remove equipment not in the update DTO
+            for (const equipment of existingEquipment) {
+              if (!updatedEquipmentIds.includes(equipment.id)) {
+                await queryRunner.manager.remove(equipment);
+              }
+            }
+
+            // Update or create equipment
+            for (const equipmentDto of sectionDto.equipments) {
+              let equipment = equipmentDto.id
+                ? await this.equipmentRepository.findOne({ where: { id: equipmentDto.id } as FindOptionsWhere<Equipment> })
+                : this.equipmentRepository.create();
+
+              Object.assign(equipment, equipmentDto);
+              equipment.section = section;
+              equipment = await queryRunner.manager.save(equipment);
+
+              // Update Components
+              if (equipmentDto.components) {
+                const existingComponents = await this.componentRepository.find({ where: { equipment: { id: equipment.id } } });
+                const updatedComponentIds = equipmentDto.components.map(c => c.id).filter(id => id);
+
+                // Remove components not in the update DTO
+                for (const component of existingComponents) {
+                  if (!updatedComponentIds.includes(component.id)) {
+                    await queryRunner.manager.remove(component);
+                  }
+                }
+
+                // Update or create components
+                for (const componentDto of equipmentDto.components) {
+                  let component = componentDto.id
+                    ? await this.componentRepository.findOne({ where: { id: componentDto.id } as FindOptionsWhere<Component> })
+                    : this.componentRepository.create();
+
+                  component.name = componentDto.name;
+                  component.equipment = equipment;
+                  component = await queryRunner.manager.save(component);
+
+                  // Update Spare Parts
+                  if (componentDto.spareParts) {
+                    const existingSpareParts = await this.sparePartRepository.find({ where: { component: { id: component.id } } });
+                    const updatedSparePartIds = componentDto.spareParts.map(sp => sp.id).filter(id => id);
+
+                    // Remove spare parts not in the update DTO
+                    for (const sparePart of existingSpareParts) {
+                      if (!updatedSparePartIds.includes(sparePart.id)) {
+                        await queryRunner.manager.remove(sparePart);
+                      }
+                    }
+
+                    // Update or create spare parts
+                    for (const sparePartDto of componentDto.spareParts) {
+                      let sparePart = sparePartDto.id
+                        ? await this.sparePartRepository.findOne({ where: { id: sparePartDto.id } as FindOptionsWhere<SparePart> })
+                        : this.sparePartRepository.create();
+
+                      Object.assign(sparePart, sparePartDto);
+                      sparePart.component = component;
+                      await queryRunner.manager.save(sparePart);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      await queryRunner.commitTransaction();
+
+      // Fetch and return the updated ProcessLine with all nested entities
+      const updatedProcessLine = await this.processLineRepository.findOne({
+        where: { id } as FindOptionsWhere<ProcessLine>,
+        relations: ['sections', 'sections.equipment', 'sections.equipment.components', 'sections.equipment.components.spareParts'],
+      });
+
+      return updatedProcessLine;
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+      throw new InternalServerErrorException('Failed to update process line');
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   private async findIssueById(issueId: string): Promise<MaintenanceIssue> {

@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
 import { OptimaintainService } from './optimaintain.service';
 import { CreateIssueDto } from './dto/create-maintenance-issue.dto';
 import { PriorityEnum, StatusEnum } from 'src/common/enums/common.enum';
 import { CreateProcessLineDto } from './dto/create-process-line.dto';
+import { UpdateProcessLineDto } from './dto/update-process-line.dto';
 
 @Controller('optimaintain')
 export class OptimaintainController {
@@ -28,7 +29,14 @@ export class OptimaintainController {
     return this.optimaintainService.updateSeverityLevel(id, severity);
   }
   @Post('process-line')
+  @UsePipes(new ValidationPipe({whitelist:true}))
   createProcessLine(@Body() dto:CreateProcessLineDto){
     return this.optimaintainService.createProcessLine(dto);
+  }
+
+  @Patch('process-line/:id')
+  @UsePipes(new ValidationPipe({whitelist:true}))
+  updateProcessLine(@Param('id') id:string, @Body() dto:UpdateProcessLineDto){
+    return this.optimaintainService.updateProcessLine(id,dto);
   }
 }
