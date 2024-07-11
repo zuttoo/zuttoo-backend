@@ -18,6 +18,7 @@ import { ProductModule } from './product/product.module';
 import { SupplyChainIssueModule } from './supplychain-issue/supplychain-issue.module';
 import { QualityAssuranceModule } from './quality-assurance/quality-assurance.module';
 import { S3Service } from './s3-service/s3-service';
+import { OptimaintainModule } from './optimaintain/optimaintain.module';
 
 
 
@@ -36,6 +37,7 @@ import { S3Service } from './s3-service/s3-service';
     ProductModule,
     SupplyChainIssueModule,
     QualityAssuranceModule,
+    OptimaintainModule,
    
   ],
   controllers: [AppController],

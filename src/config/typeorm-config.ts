@@ -12,17 +12,17 @@ export const typeOrmConfig = new DataSource({
   username: username,
   password: password,
   database: database,
-  entities: [join(process.cwd(), 'dist/**/*.entity.js')],
+  entities: [join(process.cwd(), 'dist/**/*.entity{.ts,.js}')],
   migrations: [],
   ssl: true,
   extra: {
     ssl: {
       // remove before prod
-      rejectUnauthorized: false,
+      rejectUnauthorized: true,
       ca: fs.readFileSync(caFilePath),
     },
   },
-  //   remove before deploying
+  //   remove before deploying,
   synchronize: true,
   logging: false,
 });

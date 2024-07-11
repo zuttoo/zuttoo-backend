@@ -1,6 +1,6 @@
 import { DefaultEntity } from "src/common/default.entity";
 import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
-import { OrderLineItem } from "src/orders/entities/order-lineitem.entity";
+import { OrderLineItem } from "src/orders/entities/order-lineitem.entity"
 
 @Entity()
 export class TestCertificate extends DefaultEntity {
