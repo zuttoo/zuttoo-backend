@@ -10,11 +10,11 @@ import { AuthModule } from 'src/auth/auth.module';
 import { AuthService } from 'src/auth/auth.service';
 import { UsersService } from 'src/users/users.service';
 import { UsersModule } from 'src/users/users.module';
-
+import { SapService } from 'src/sap/sap.service';
 
 @Module({
   imports:[TypeOrmModule.forFeature([Supplier]), ProductModule,OrdersModule,AuthModule,UsersModule],
   controllers: [SuppliersController, DashboardController],
-  providers: [SuppliersService,AuthService,UsersService],
+  providers: [SuppliersService,AuthService,UsersService,SapService],
 })
 export class SuppliersModule {}

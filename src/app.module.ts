@@ -20,6 +20,8 @@ import { QualityAssuranceModule } from './quality-assurance/quality-assurance.mo
 import { S3Service } from './s3-service/s3-service';
 import { OptimaintainModule } from './optimaintain/optimaintain.module';
 
+import { SapService } from './sap/sap.service';
+
 
 
 @Module({
