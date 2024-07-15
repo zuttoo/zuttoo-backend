@@ -1,9 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { FgSku } from 'src/orders/entities/fgsku.entity';
 import { SFGSku } from 'src/orders/entities/sfgsku.entity';
 import { RmSku } from 'src/orders/entities/rmsku.entity';
@@ -37,6 +37,7 @@ export class ProductService {
   @InjectRepository(FgSku) private readonly fgskuRepository: Repository<FgSku>,
   @InjectRepository(SFGSku) private readonly sfgskuRepository: Repository<SFGSku>,
   @InjectRepository(RmSku) private readonly rmskuRepository: Repository<RmSku>,
+  private dataSource:DataSource
  ){}
 
  async getAllProducts(clientId: string, type: string): Promise<{ message: string, data: Product[], count:number }> {
@@ -174,6 +175,55 @@ async getInventory(fgSkuId:string):Promise<{ data:TransformedInventoryData[], co
 
 }
 
+async createProductWithSku(createProductDto:CreateProductDto):Promise<Product[]>{
+  const queryRunner=this.dataSource.createQueryRunner();
+  await queryRunner.connect();
+
+  // start the transaction
+  try{
+    const newProduct=this.productRepository.create({
+      name:createProductDto.name,
+      type:createProductDto.type,
+      client:createProductDto?.clientId
+    });
+    await queryRunner.manager.save(newProduct);
+
+    // create SKUs
+    const skus=createProductDto.skus;
+    const skuPromises=skus.map(async(sku)=>{
+      let repository;
+      if(createProductDto.type==='FG'){
+        repository=this.fgskuRepository;
+      }else if(createProductDto.type==='SFG'){
+        repository=this.sfgskuRepository;
+      }else if(createProductDto.type==='RM'){
+        repository=this.rmskuRepository;
+      }
+
+      const newSku=repository.create({
+        materialDescription:sku,
+        product:newProduct
+      });
+
+      return this.dataSource.manager.save(newSku);
+    });
+
+    return await Promise.all(skuPromises);
+    
+
+  }catch(e){
+
+    await queryRunner.rollbackTransaction();
+    throw new InternalServerErrorException('Failed to create product.')
+  }finally{
+    await queryRunner.release();
+  }
+}
+
+
+async updateProductWithSku(productId:string,updateDto: UpdateProductDto):Promise<Product[]>{
+  
+}
 
 
 }

@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import {
-    BusinessPartner
-  } from '../../services/business-partner-service';
+// import {
+//     BusinessPartner
+//   } from '../../services/business-partner-service';
     
-import {businessPartnerService as businessPartnerService} from '../../services/business-partner-service/index';
+// import {businessPartnerService as businessPartnerService} from '../../services/business-partner-service/index';
 // const {businessPartnerService}=require('../../services/business-partner-service')
 
 

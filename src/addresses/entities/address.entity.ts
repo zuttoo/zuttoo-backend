@@ -1,3 +1,4 @@
+import { Client } from 'src/clients/entities/client.entity';
 import { DefaultEntity } from '../../common/default.entity';
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 
@@ -6,10 +7,7 @@ export class Address extends DefaultEntity {
 
 
   @Column()
-  address1: string;
-
-  @Column()
-  address2: string;
+  address: string;
 
   @Column()
   city: string;
@@ -17,9 +15,17 @@ export class Address extends DefaultEntity {
   @Column()
   state: string;
 
+  @Column({
+    nullable:true
+  })
+  postalCode: string;
+
   @Column()
   country: string;
 
-  @Column()
-  postalCode: number;
+  @OneToOne(() => Client, (client)=>client.address)
+  @JoinColumn()
+  client: typeof Client;
+
+
 }

@@ -23,15 +23,26 @@ export class Client extends DefaultEntity {
   @Column()
   name: string;
 
-  @OneToOne(() => Address)
-  @JoinColumn()
-  address: Address;
-
   @ManyToMany(() => Supplier, (supplier) => supplier.clients, {nullable:true})
   suppliers: Supplier[];
 
   @ManyToMany(() => Oem, (oem) => oem.clients, {nullable:true})
   oems:Oem[];
+
+  @Column({nullable:true})
+  contactPerson:string;
+
+  @Column({nullable:true})
+  contactNumber:string;
+
+  @Column({nullable:true})
+  contactEmail:string
+
+  @Column({type:'timestamptz',nullable:true})
+  subscriptionValidity:Date
+
+  @OneToOne(()=>Address, (address)=>address.client, {cascade:true})
+  address:Address;
 
   @OneToMany(() => User, (user) => user.client, {nullable:true})
   users: User[];
