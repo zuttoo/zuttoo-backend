@@ -24,4 +24,4 @@ jobs:
       - name: Delete old container
         run: docker rm -f zuttoo-backend-container
       - name: Run docker container
-        run: docker run -d -p 8000:8000 -name zuttoo-backend-container prajna1999/zuttoo-backend
+        run: docker run -d -p 8000:8000 --name zuttoo-backend-container prajna1999/zuttoo-backend

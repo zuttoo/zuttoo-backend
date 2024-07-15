@@ -16,21 +16,33 @@ import { RmSku } from 'src/orders/entities/rmsku.entity';
 import { Order } from 'src/orders/entities/order.entity';
 import { Product } from 'src/product/entities/product.entity';
 import { SupplyChainIssue } from 'src/supplychain-issue/entities/supplychain-issue.entity';
+import { ProcessLine } from 'src/optimaintain/entities/process-line.entity';
 @Entity()
 export class Client extends DefaultEntity {
 
   @Column()
   name: string;
 
-  @OneToOne(() => Address)
-  @JoinColumn()
-  address: Address;
-
   @ManyToMany(() => Supplier, (supplier) => supplier.clients, {nullable:true})
   suppliers: Supplier[];
 
   @ManyToMany(() => Oem, (oem) => oem.clients, {nullable:true})
   oems:Oem[];
+
+  @Column({nullable:true})
+  contactPerson:string;
+
+  @Column({nullable:true})
+  contactNumber:string;
+
+  @Column({nullable:true})
+  contactEmail:string
+
+  @Column({type:'timestamptz',nullable:true})
+  subscriptionValidity:Date
+
+  @OneToOne(()=>Address, (address)=>address.client, {cascade:true})
+  address:Address;
 
   @OneToMany(() => User, (user) => user.client, {nullable:true})
   users: User[];
@@ -40,6 +52,9 @@ export class Client extends DefaultEntity {
 
   @OneToMany(()=>FgSku, (FgSku)=>FgSku.client, {nullable:true})
   fgSku:FgSku[];
+
+  @OneToMany(()=>ProcessLine, processLine=>processLine.client)
+  processLines:ProcessLine[];
 
   
   @OneToMany(()=>RmSku, (RmSku)=>RmSku.client, {nullable:true})

@@ -33,7 +33,7 @@ export class Product extends DefaultEntity{
 
     @OneToMany(()=>SFGSku, (sfgsku)=>sfgsku.product, {nullable:true})
     sfgsku:SFGSku[];
-
+    
     @OneToMany(()=>RmSku, (rmsku)=>rmsku.product,{nullable:true})
     rmsku:RmSku[];
 }
