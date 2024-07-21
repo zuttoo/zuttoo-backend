@@ -31,7 +31,7 @@ interface Inventory{
   };
 }
 
-interface Supplier{
+interface SupplieScore{
   id:string;
   name:string;
   cost:number;
@@ -42,13 +42,13 @@ interface Supplier{
 }
 
 type RmSkuWithSuppliers = Inventory['rm'] & {
-  suppliers: Supplier[];
+  suppliers: SupplieScore[];
 };
 
 interface InventoryWithSuppliers extends Omit<Inventory, 'rm'> {
   rm: RmSkuWithSuppliers;
 }
-const mockSuppliers:{[rmskuId:string]:Supplier[]}={
+const mockSuppliers:{[rmskuId:string]:SupplieScore[]}={
   "SKU_TSTL001_bf72e3d2-0401-4e75-9981-2f82d4a7074d":[
     { id: 's1', name: 'JSW Steel', cost: 100000, timelineScore: 0.9, qualityScore: 0.95, costScore: 0.8, reliabilityScore: 0 },
     { id: 's2', name: 'Chitradurga Steel Works', cost: 90000, timelineScore: 0.85, qualityScore: 0.8, costScore: 0.9, reliabilityScore: 0 },

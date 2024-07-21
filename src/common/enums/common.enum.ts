@@ -18,3 +18,6 @@ export enum CommunicationChannel{
     EMAIL='EMAIL',
     TEXT_MESSAGE='TEXT_MESSAGE'
 }
+
+
+

@@ -56,8 +56,8 @@ export class OrderLineItem extends DefaultEntity{
     @ManyToOne(()=>RmSku, (rmsku)=>rmsku.orderLineItems, {nullable:true})
     rmsku: typeof RmSku;    
 
-    @OneToOne(()=>RmSkuStage, {nullable:true})
-    @JoinColumn()
+    @ManyToOne(()=>RmSkuStage,(rmskustage)=>rmskustage.orderLineItem ,{nullable:true})
+   
     rmskustage:RmSkuStage;
 }   
 

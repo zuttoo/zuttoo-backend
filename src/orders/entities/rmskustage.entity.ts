@@ -1,5 +1,5 @@
 import { DefaultEntity } from "src/common/default.entity";
-import { Column, Entity, OneToOne} from "typeorm";
+import { Column, Entity, OneToMany, OneToOne} from "typeorm";
 import { OrderLineItem } from "./order-lineitem.entity";
 
 export enum RMStageStatus{
@@ -146,6 +146,6 @@ export class RmSkuStage extends DefaultEntity{
     })
     escalationLevel:number;
 
-    @OneToOne(()=>OrderLineItem, {nullable:true})
+    @OneToMany(()=>OrderLineItem,(oli)=>oli.rmskustage, {nullable:true})
     orderLineItem:typeof OrderLineItem;
 }
