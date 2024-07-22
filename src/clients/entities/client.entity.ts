@@ -23,7 +23,7 @@ export class Client extends DefaultEntity {
   @Column()
   name: string;
 
-  @ManyToMany(() => Supplier, (supplier) => supplier.clients, {nullable:true})
+  @ManyToMany(() => Supplier, (supplier) => supplier.clients, {nullable:true,cascade:true})
   suppliers: Supplier[];
 
   @ManyToMany(() => Oem, (oem) => oem.clients, {nullable:true})

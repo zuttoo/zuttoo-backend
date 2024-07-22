@@ -48,25 +48,9 @@ export class RmSku extends DefaultEntity{
     @ManyToOne(()=>SFGSku, (sfgsku)=>sfgsku.rmsku, {nullable:true})
     sfgsku:SFGSku[];
     
-    // @ManyToMany(() => Supplier,(supplier)=>supplier.rmskus, {nullable:true
-    // })
-    // @JoinColumn()
-    // suppliers: Supplier[];
-
-    @ManyToMany(()=>Supplier, supplier=>supplier.supplierRmSkus)
-    @JoinTable({
-        name:'rmsku_supplier',
-        joinColumn:{
-            name:'rmskuId',
-            referencedColumnName:'id',
-        },
-        inverseJoinColumn:{
-            name:'supplierId',
-            referencedColumnName:'id',
-        },
+    @ManyToOne(() => Supplier,(supplier)=>supplier.rmskus, {nullable:true
     })
-    rmskuSuppliers:RmSkuSupplier[]
-
+    supplier: Supplier[];
 
 
 }

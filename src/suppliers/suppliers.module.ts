@@ -11,9 +11,12 @@ import { AuthService } from 'src/auth/auth.service';
 import { UsersService } from 'src/users/users.service';
 import { UsersModule } from 'src/users/users.module';
 import { SapService } from 'src/sap/sap.service';
+import { Address } from 'src/addresses/entities/address.entity';
+import { Client } from 'src/clients/entities/client.entity';
+import { RmSku } from 'src/orders/entities/rmsku.entity';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Supplier]), ProductModule,OrdersModule,AuthModule,UsersModule],
+  imports:[TypeOrmModule.forFeature([Supplier, Address, Client,RmSku]), ProductModule,OrdersModule,AuthModule,UsersModule],
   controllers: [SuppliersController, DashboardController],
   providers: [SuppliersService,AuthService,UsersService,SapService],
 })

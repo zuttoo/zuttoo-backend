@@ -9,8 +9,7 @@ import { RmSkuStage } from "./rmskustage.entity";
 @Entity()
 export class OrderLineItem extends DefaultEntity{
     @Column({
-       
-        nullable:true
+       nullable:true
     })
     batchNumber:string;
 
@@ -57,7 +56,6 @@ export class OrderLineItem extends DefaultEntity{
     rmsku: typeof RmSku;    
 
     @ManyToOne(()=>RmSkuStage,(rmskustage)=>rmskustage.orderLineItem ,{nullable:true})
-   
     rmskustage:RmSkuStage;
 }   
 

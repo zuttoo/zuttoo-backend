@@ -23,7 +23,6 @@ import {
   @Entity()
   export class Supplier extends DefaultEntity {
   
-  
     @Column({nullable:true})
     name: string;
   
@@ -59,15 +58,11 @@ import {
     @OneToMany(()=>Order, (order)=>order.supplier, {nullable:true})
     order:Order[];
   
-    @ManyToMany(()=>RmSku, (rmsku)=>rmsku.rmskuSuppliers, {nullable:true})
-  
-    supplierRmSkus:RmSkuSupplier[];
+    @OneToMany(()=>RmSku, (rmsku)=>rmsku.supplier, {nullable:true})
+    rmskus:RmSku[];
 
     @OneToMany(()=>SupplyChainIssue, (sci)=>sci.supplier, {nullable:true})
     supplyChainIssues:SupplyChainIssue[];
 
-
-
-  
   }
   

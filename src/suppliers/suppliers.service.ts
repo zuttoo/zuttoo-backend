@@ -1,10 +1,14 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Supplier } from './entities/supplier.entity';
 import { SelectSupplierDto } from './dto/select-supplier.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RmSku } from '../orders/entities/rmsku.entity';
 import { ProductService } from 'src/product/product.service';
+import { CreateClientSupplierDto } from './dto/create-client-supplier.dto';
+import { Address } from 'src/addresses/entities/address.entity';
+import { Client } from 'src/clients/entities/client.entity';
+import { UpdateClientSupplierDto } from './dto/update-client-supplier.dto';
 
 interface Inventory{
   fg:{
@@ -85,8 +89,81 @@ export class SuppliersService {
     private productService: ProductService,
     @InjectRepository(Supplier) private supplierRepository:Repository<Supplier>,
     @InjectRepository(RmSku) private rmskuRepository: Repository<RmSku>,
+    @InjectRepository(Address) private addressRepository:Repository<Address>,
+    @InjectRepository(Client) private clientRepository:Repository<Client>
   ){}
 
+  async createSuppliers(dto:CreateClientSupplierDto):Promise<Supplier>{
+
+    const {clientId, address, ...supplierData}=dto
+    const supplier=this.supplierRepository.create(supplierData);
+    if(address){
+      const newAddress=this.addressRepository.create(address);
+      const savedAddress=await this.addressRepository.save(newAddress);
+      supplier.address=savedAddress;
+    }
+    if(clientId){
+      const client=await this.clientRepository.findOne({
+        where:{
+          id:clientId
+        }
+      });
+      supplier.clients=[client];
+      
+    }
+    return await this.supplierRepository.save(supplier);
+
+  }
+
+  async updateSupplier(id:string,dto:UpdateClientSupplierDto):Promise<Supplier>{
+    const {clientId,address, ...supplierData}=dto;
+
+    const supplier=await this.supplierRepository.findOne(
+     {
+      where:{
+        id:id,
+        
+      },
+      relations:[
+        'address', 'clients'
+      ]
+     }
+    );
+
+    if(!supplier){
+      throw new Error('Supplier Not Found');
+
+    }
+    // update fields
+    Object.assign(supplier, supplierData);
+    //  update address
+    if(address){
+      if(supplier.address){
+        Object.assign(supplier.address, address);
+        await this.addressRepository.save(supplier.address)
+      }else{
+        // create new address
+        const newAdress=this.addressRepository.create(address);
+        const savedAddress=await this.addressRepository.save(newAdress);
+        supplier.address=savedAddress;
+      }
+    }
+
+    // update client
+    if(clientId){
+      const client=await this.clientRepository.findOne({
+        where:{
+          id:id
+        }
+      });
+      if(!client){
+        throw new NotFoundException(`Client not found for clientId ${id}`)
+      }
+      supplier.clients=[client]
+    }
+
+    return this.supplierRepository.save(supplier);
+  }
   async rankSuppliers(dto:SelectSupplierDto):Promise<{message:string;data:InventoryWithSuppliers[]}>{
 
     const {productName, fgskuId, quantity, uom, priority, expectedDeliveryDate}=dto;
@@ -135,8 +212,6 @@ export class SuppliersService {
     }
   }
 
-  async getSupplierParams(){
-    
-  }
+
 
 }
